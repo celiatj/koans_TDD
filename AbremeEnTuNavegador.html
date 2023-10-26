@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Koans</title>
+    <style>:root{
+  --fail-color: red;
+  --pass-color: forestgreen;
+  --skip-color: darkgray;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+*,
+*::after,
+*::before,
+form,
+p {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0 10rem 1rem 10rem;
+}
+
+.center-test-counts {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.sticky-on-top {
+  position: sticky;
+  top: 0;
+  background: #E8E8E8;
+  padding: 0.5rem;
+  border-radius: 0 0 10px 10px;
+}
+
+.suite-description{
+  margin: 0.5rem;
+  font-size: 30px;
+}
+
+.test {
+  padding: 0.5rem;
+}
+
+.passes {
+  color: var(--pass-color);
+  background-color: #d6f5d6;
+}
+
+.fails {
+  color: var(--fail-color);
+  background-color: #f9d1d1;
+}
+
+.syntax-error {
+  color: var(--fail-color);
+  font-size: 30px;
+  text-align: center;
+  background-color: #f9d1d1;
+  padding: 0.5rem 0;
+}
+
+.skips {
+  color: var(--skip-color);
+}
+
+.skip {
+  color: var(--skip-color);
+  background-color: #f0f0f0;
+}
+
+.error-trace{
+  color: var(--fail-color);
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+}
+
+.error-message {
+  background-color: #f9d1d1;
+  padding: 1rem;
+}
+
+.expected-message{
+  margin-left: 2rem;
+  background-color: #fe9c9c;
+  border-radius: 10px;
+  width: auto;
+  display: inline-block;
+  padding: 0.5rem;
+}
+
+#passing-test-count{
+  color: var(--pass-color);
+}
+
+#failing-test-count{
+  color: var(--fail-color);
+}
+
+#skipping-test-count{
+  color: var(--skip-color);
+}
+</style>
+</head>
+<body>
+    <div id="container">
+        <div class="center-test-counts sticky-on-top" id="header">
+            <div id="passing-test-count"></div>
+            <div id="failing-test-count"></div>
+            <div id="skipping-test-count"></div>
+        </div>
+        <div id="body"></div>
+    </div>
+    <script>
+const ExpectationError = class extends Error {
+  constructor() {
+    super()
+
+    this.isExpectationError = true
+  }
+
+  stackTrace() {
+    return StackTrace.removeVeranoFrom(this.stack)
+  }
+}
+
+const RellenameCorrectamente = class {}
+
+const UnsolvedKoanError = class extends ExpectationError {
+  rawMessage() {
+    return 'Este Koan esta por resolver'
+  }
+
+  arguments() {
+    return {}
+  }
+}
+</script>
+    <script>
+const StackTrace = class {
+  static removeVeranoFrom(stack) {
+    return new StackTrace(stack).removeVerano()
+  }
+
+  constructor(stack) {
+    this.stack = stack
+  }
+
+  removeVerano() {
+    const stackTrace = this._stackAsArray()
+
+    const stack = stackTrace.filter(this._removeVeranoLines)
+
+    return stack
+  }
+
+  _stackAsArray = () => {
+    return this.stack.split("\n")
+  }
+
+  _removeVeranoLines = (line) => {
+    return !line.includes('AbremeEnTuNavegador.html')
+  }
+}
+</script>
+    <script>
+const ExpectationListError = class extends ExpectationError {
+  MESSAGE_NEGATIVE = 'The lists are equal'
+
+  constructor(actual, expected, isNegated) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+    this.isNegated = isNegated
+  }
+
+  _selectMessage() {
+    let message = this.MESSAGE_POSITIVE
+
+    if (this.isNegated) { message = this.MESSAGE_NEGATIVE }
+
+    return message
+  }
+}
+
+</script>
+    <script>
+const ExpectedIsNotAListError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return `
+      %actual%br
+      is not a list, is a %actualType
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      actualType: this._actualType()
+    }
+  }
+
+  _actualType() {
+    return typeof this.actual
+  }
+}
+</script>
+    <script>
+const ExpectedIsIncludedInActualListError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Actual list: %actual%br
+      includes: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+</script>
+    <script>
+const ExpectedIsIncludedInActualStringError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Actual string: %actual%br
+      includes substring: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+
+</script>
+    <script>
+const ExpectedIsNotIncludedInActualListError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Actual list: %actual%br
+      does not include: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+</script>
+    <script>
+const ExpectedIsNotIncludedInActualStringError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Actual string: %actual%br
+      does not includes substring: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+</script>
+    <script>const HasToThrowExpectedErrorError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return 'Expect to throw error %expected, but throws error %actual'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual.constructor.name,
+      expected: this.expected.name
+    }
+  }
+}
+</script>
+    <script>
+const HaveDifferentKeysError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Dictionaries have different keys:%br
+      Received: %actual%br
+      Expected: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this._orderedActual(),
+      expected: this._orderedExpected()
+    }
+  }
+
+  _orderedActual() {
+    const orderedKeys = this._order(this.actual)
+
+    return orderedKeys
+  }
+
+  _orderedExpected() {
+    const orderedKeys = this._order(this.expected)
+
+    return orderedKeys
+  }
+
+  _order(dictionary) {
+    const ordered = {}
+    const keys = Object.keys(dictionary)
+    const copyDictionary = {...dictionary}
+    const orderedKeys = keys.sort()
+
+    orderedKeys.forEach((key) => {
+      ordered[key] = copyDictionary[key]
+
+      delete copyDictionary[key]
+    })
+
+    return JSON.stringify(ordered)
+  }
+}
+</script>
+    <script>
+const HaveDifferentValuesError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Dictionaries have different values:%br
+      Received: %actual%br
+      Expected: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this._orderedActual(),
+      expected: this._orderedExpected()
+    }
+  }
+
+  _orderedActual() {
+    const orderedKeys = this._order(this.actual)
+
+    return orderedKeys
+  }
+
+  _orderedExpected() {
+    const orderedKeys = this._order(this.expected)
+
+    return orderedKeys
+  }
+
+  _order(dictionary) {
+    const ordered = {}
+    const keys = Object.keys(dictionary)
+    const copyDictionary = {...dictionary}
+    const orderedKeys = keys.sort()
+
+    orderedKeys.forEach((key) => {
+      ordered[key] = copyDictionary[key]
+
+      delete copyDictionary[key]
+    })
+
+    return JSON.stringify(ordered)
+  }
+}
+</script>
+    <script>
+const DictionariesAreEqualError = class extends ExpectationError {
+  rawMessage() {
+    return 'The dictionaries are equal'
+  }
+
+  arguments() {
+    return {}
+  }
+}
+</script>
+    <script>
+const HaveDifferentKeysQuantityError = class extends ExpectationError {
+  constructor(actual, expected) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+  }
+
+  rawMessage() {
+    return `
+      Dictionaries have different quantity of keys:%br
+      Received: %actual%br
+      Expected: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this._orderedActual(),
+      expected: this._orderedExpected()
+    }
+  }
+
+  _orderedActual() {
+    const orderedKeys = this._order(this.actual)
+
+    return orderedKeys
+  }
+
+  _orderedExpected() {
+    const orderedKeys = this._order(this.expected)
+
+    return orderedKeys
+  }
+
+  _order(dictionary) {
+    const ordered = {}
+    const keys = Object.keys(dictionary)
+    const copyDictionary = {...dictionary}
+    const orderedKeys = keys.sort()
+
+    orderedKeys.forEach((key) => {
+      ordered[key] = copyDictionary[key]
+
+      delete copyDictionary[key]
+    })
+
+    return JSON.stringify(ordered)
+  }
+}
+</script>
+    <script>const HasToThrowAnErrorError = class extends ExpectationError {
+  rawMessage() {
+    return 'Expect to raise an error, but nothing happens'
+  }
+
+  arguments() {
+    return {}
+  }
+}
+</script>
+    <script>
+const HasNotToThrowASpecificErrorError = class extends ExpectationError {
+  constructor(retievedError) {
+    super()
+
+    this.retievedError = retievedError
+  }
+  rawMessage() {
+    return `
+      Expect not to throw error %error,%br
+      but was thrown.
+    `
+  }
+
+  arguments() {
+    return {
+      error: this._retrivedErrorType()
+    }
+  }
+
+  _retrivedErrorType() {
+    return this.retievedError.constructor.name
+  }
+}
+</script>
+    <script>
+const HasNotToThrowAnErrorError = class extends ExpectationError {
+  constructor(retievedError) {
+    super()
+
+    this.retievedError = retievedError
+  }
+  rawMessage() {
+    return `
+      Expect not to throw an error,%br
+      but was thrown: %error
+    `
+  }
+
+  arguments() {
+    return {
+      error: this._retrivedErrorType()
+    }
+  }
+
+  _retrivedErrorType() {
+    return this.retievedError.constructor.name
+  }
+}
+</script>
+    <script>const ListWithDifferentSizesError = class extends ExpectationListError {
+  MESSAGE_POSITIVE = 'The lists have different sizes'
+
+  rawMessage() {
+    return this._selectRawMessage()
+  }
+
+  arguments() {
+    return {
+      message: this._selectMessage(),
+      actualSize: this.actual.length,
+      actual: this.actual,
+      expectedSize: this.expected.length,
+      expected: this.expected,
+    }
+  }
+
+  _selectRawMessage() {
+    let message = this._positiveRawMessage()
+
+    if (this.isNegated) {
+      message = this._negatedRawMessage()
+    }
+
+    return message
+  }
+
+  _positiveRawMessage() {
+    return `
+      %message%br
+      Received size: %actualSize%br
+      Expected size: %expectedSize%br
+      %br
+      Received list: %actual%br
+      Expected list: %expected%br
+    `
+  }
+
+  _negatedRawMessage() {
+    return `
+      %message%br
+      Received list: %actual%br
+      Expected list: %expected%br
+    `
+  }
+}
+</script>
+    <script>
+const ExpectedIsNotAStringError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return `
+      %actual%br
+      is not a string, is a %actualType
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      actualType: this._actualType()
+    }
+  }
+
+  _actualType() {
+    return typeof this.actual
+  }
+}
+</script>
+    <script>const ListWithDifferentOrderError = class extends ExpectationListError {
+  MESSAGE_POSITIVE = 'The lists have different order'
+
+  rawMessage() {
+    return `
+      %message%br
+      Received list: %actual%br
+      Expected list: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      message: this._selectMessage(),
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+
+</script>
+    <script>const ListWithDifferentValuesError = class extends ExpectationListError {
+  MESSAGE_POSITIVE = 'The lists have different values'
+
+  rawMessage() {
+    return `
+      %message%br
+      Received ordered list: %actual%br
+      Expected ordered list: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      message: this._selectMessage(),
+      actual: this.actual,
+      expected: this.expected
+    }
+  }
+}
+</script>
+    <script>
+const OnlyCanUseIncludeMatcherIfActualIsAStringOrListError = class extends ExpectationListError {
+  MESSAGE_POSITIVE = 'The lists have different values'
+
+  rawMessage() {
+    return 'Only can use the matcher #include when actual value type are strings or lists'
+  }
+
+  arguments() {
+    return {}
+  }
+}
+</script>
+    <script>
+const ActualIsNotTruthyError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual to be truthy'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>
+const ActualIsTruthyError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual not to be truthy'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>const ActualIsNullError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual to be null'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>
+const ActualIsUndefinedError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual to be undefined'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>
+const ActualIsNotUndefinedError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual NOT to be undefined'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>const ActualIsNotNullError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual not to be null'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>
+const ActualIsNotFalsyError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual to be falsy'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>const ActualIsFalsyError = class extends ExpectationError {
+  constructor(actual) {
+    super()
+
+    this.actual = actual
+  }
+
+  rawMessage() {
+    return 'Expect %actual not to be falsy'
+  }
+
+  arguments() {
+    return {
+      actual: this.actual
+    }
+  }
+}
+</script>
+    <script>
+class ActualAndExpectedValueDoNotMatchError extends ExpectationError {
+  constructor(actual, expected, isNegated=false) {
+    super()
+
+    this.actual = actual
+    this.expected = expected
+    this.isNegated = isNegated
+  }
+
+  rawMessage() {
+    return `
+      %message%br
+      Received: %actual%br
+      Expected: %expected%br
+    `
+  }
+
+  arguments() {
+    return {
+      actual: this.actual,
+      expected: this.expected,
+      message: this._buildMessage()
+    }
+  }
+
+  _buildMessage() {
+    let message = 'To be equal'
+
+    if (this.isNegated) { message = 'NOT to be equal' }
+
+    return message
+  }
+}
+</script>
+    <script>
+class SyntaxErrorListener {
+  static onErrorExecute(aFunction) {
+    const listener = new SyntaxErrorListener(window)
+
+    listener.onErrorExecute(aFunction)
+  }
+
+  constructor(myWindow) {
+    this.myWindow = myWindow
+
+  }
+
+  onErrorExecute(aFunction) {
+    this.myWindow.onerror = aFunction
+  }
+}
+</script>
+    <script>
+class Hooks {
+  static empty() {
+    return new Hooks()
+  }
+
+  constructor() {
+    this.hooks = {}
+  }
+
+  add(suitName, hook) {
+    if (!this.hooks[suitName]) { this.hooks[suitName] = [] }
+
+    this.hooks[suitName].push(hook)
+  }
+
+  execute(suitNames) {
+    suitNames.forEach(suit => {
+      const hooks = this.hooks[suit]
+
+      if (hooks) {
+        hooks.forEach(hook => hook())
+      }
+    })
+  }
+
+  clean(suitName) {
+    delete this.hooks[suitName]
+  }
+}
+</script>
+    <script>
+class NormalError extends Error {
+  constructor(error) {
+    super()
+
+    this.error = error
+  }
+
+  stackTrace() {
+    return StackTrace.removeVeranoFrom(this.error.stack)
+  }
+
+  rawMessage() {
+    return this.error.toString()
+  }
+
+  arguments() {
+    return {}
+  }
+}
+</script>
+    <script>
+class ErrorPresenter {
+  static with(text, error) {
+    return new ErrorPresenter(text, error)
+  }
+
+  constructor(text, error) {
+    this.text = text
+    this.error = error
+  }
+
+  asHtml() {
+    return `
+      <h3 class="test fails js-test-failing">${this.text}</h3>
+      <div class="error-message">${this._buildMainMessage()} ${this._formatTrace()}</div>
+    `
+  }
+
+  _formatTrace() {
+    const stackTrace = this.error.stackTrace()
+    const formattedContent = stackTrace.map(this._addErrorTraceClass.bind(this))
+    const contentAsString = formattedContent.join('')
+
+    return `<p>${contentAsString}</p>`
+  }
+
+  _addErrorTraceClass(line) {
+    if (!this._isIncludedInTitle(line)) {
+      return `<p class="error-trace">${line}</p>`
+    }
+  }
+
+  _isIncludedInTitle(line) {
+    const title = this._buildMainMessage()
+
+    return title === line
+  }
+
+  _buildMainMessage() {
+    let message = this.error.rawMessage()
+
+    this._errorArguments().forEach((argument) => {
+      const value = this._beautify(argument)
+
+      message = this._interpolate(message, argument, value)
+    })
+
+    message = this._addLineBreaksTo(message)
+
+    return `<div class="expected-message">${message}</div>`;
+  }
+
+  _errorArguments() {
+    return Object.keys(this.error.arguments())
+  }
+
+  _interpolate(text, key, value) {
+    return text.replace('%' + key, value)
+  }
+
+  _addLineBreaksTo(message) {
+    return message.replaceAll('%br', '<br />')
+  }
+
+  _beautify(name) {
+    let argument = this.error.arguments()[name]
+
+    if (!this._isMessage(name)) {
+      if (this._isString(argument)) {
+        argument = this._addQuotesMarks(argument)
+      }
+      if (this._isList(argument)) {
+        argument = this._showAsList(argument)
+      }
+    }
+
+    return `<strong>${argument}</strong>`
+  }
+
+  _addQuotesMarks(value) {
+    return `"${value}"`
+  }
+
+  _showAsList(value) {
+    return JSON.stringify(value)
+  }
+
+  _isMessage(value) {
+    return value === 'message'
+  }
+
+  _isString(value) {
+    return typeof value === 'string'
+  }
+
+  _isList(value) {
+    return Array.isArray(value)
+  }
+}
+</script>
+    <script>
+const onLoadMoveDocumentToFirstTestFailing = function() {
+  window.addEventListener('load', function() {
+    const testFailing = document.querySelector('.js-test-failing')
+
+    if (testFailing) {
+      testFailing.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center"
+      })
+    }
+  })
+}
+</script>
+    <script>
+class Drawer {
+  static ERROR_BEFORE_ALL_MESSAGE = 'There are errors in beforeAll hook'
+  static PASSING_TEST_COUNT = 'Koans solucionadas'
+  static FAILING_TEST_COUNT = 'Test failed'
+  static SKIPPING_TEST_COUNT = 'Koans pendientes'
+
+  constructor(document) {
+    this.document = document
+
+    this.continueDrawing = true
+  }
+
+  subjectUnderTest(text) {
+    const subjectEmoji = "&#128218;"
+    const titleHTML = `<h1 class="suite-description">${subjectEmoji} ${text}</h1>`
+
+    this._appendHTMLToBody(titleHTML)
+  }
+
+  testPassing(text) {
+    const textHTML = this._htmlTestPassing(text)
+
+    this._appendHTMLToBody(textHTML)
+  }
+
+  testFailing(text, error) {
+    const failEmoji = "&#x274C;"
+    const failText = `${text} ${failEmoji}`
+    const textHTML = this._htmlTestFailing(failText, error)
+
+    this._appendHTMLToBody(textHTML)
+  }
+
+  skippedTest(text) {
+    const skippedEmoji = "&#x1F634;"
+    const skippedlText = `${text} ${skippedEmoji}`
+    const textHTML = this._htmlSkippedTest(skippedlText)
+
+    this._appendHTMLToBody(textHTML)
+  }
+
+  passingTestCount(quantity) {
+    const textHTML = this._htmlPassingTestCount(quantity)
+
+    this._updateElementWith('#passing-test-count', textHTML)
+  }
+
+  failingTestCount(quantity) {
+    const textHTML = this._htmlFailingTestCount(quantity)
+
+    this._updateElementWith('#failing-test-count', textHTML)
+  }
+
+  skippingTestCount(quantity) {
+    const textHTML = this._htmlSkippingTestCount(quantity)
+
+    this._updateElementWith('#skipping-test-count', textHTML)
+  }
+
+  errorInBeforeAll(error) {
+    this.testFailing(Drawer.ERROR_BEFORE_ALL_MESSAGE, error)
+  }
+
+  syntaxError() {
+    const element = this.document.querySelector('#container')
+    const emoji = "&#9997;"
+    element.innerHTML = `
+        <div class="syntax-error">There are a syntax error. ${emoji}</div>
+    `;
+    this.continueDrawing = false
+  }
+
+  _appendHTMLToBody(html) {
+    const element = this.document.querySelector('#body')
+
+    if(this.continueDrawing) {
+      element.innerHTML += html
+    }
+  }
+
+  _updateElementWith(selector, html) {
+    const element = this.document.querySelector(selector)
+
+    if(this.continueDrawing) {
+      element.innerHTML = html
+    }
+  }
+
+  _htmlTestPassing(text) {
+    return `<h3 class="test passes">${text}</h3>`
+  }
+
+  _htmlSkippedTest(text) {
+    return `<h3 class="test skip">${text}</h3>`
+  }
+
+  _htmlTestFailing(text, error) {
+    return ErrorPresenter.with(text, error).asHtml()
+  }
+
+  _htmlPassingTestCount(quantity) {
+    const passedEmoji = "&#127881;"
+    return `<div id="passing-test-count">${Drawer.PASSING_TEST_COUNT}: ${quantity} ${passedEmoji}</div>`
+  }
+
+  _htmlFailingTestCount(quantity) {
+    const failedEmoji= "&#128128;"
+    return `<div id="failing-test-count">${Drawer.FAILING_TEST_COUNT}: ${quantity} ${failedEmoji}</div>`
+  }
+
+  _htmlSkippingTestCount(quantity) {
+    const skippedEmoji= "&#x1F634;"
+    return `<div id="skipping-test-count">${Drawer.SKIPPING_TEST_COUNT}: ${quantity} ${skippedEmoji}</div>`
+  }
+}
+</script>
+    <script>
+const ExpectAnError = class {
+  constructor(act) {
+    this.isNegated = false
+
+    this.act = act
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  toThrowAnError(expected) {
+    if (this.isNegated) {
+      this._hasNotToThrowError(expected)
+    } else {
+      this._hasToThrowError(expected)
+    }
+  }
+
+  _hasNotToThrowError(expected) {
+    try {
+      this.act()
+    } catch (error) {
+      if (expected) {
+        throw new HasNotToThrowASpecificErrorError(error)
+      } else {
+        throw new HasNotToThrowAnErrorError(error)
+      }
+    }
+  }
+
+  _hasToThrowError(expected) {
+    let errorWasThrowed = false
+
+    try {
+      this.act()
+    } catch (error) {
+      errorWasThrowed = true
+
+      if (expected) {
+        const isThrowingSpecificError = (error instanceof expected)
+
+        if (!isThrowingSpecificError) {
+          throw new HasToThrowExpectedErrorError(error, expected)
+        }
+      }
+    }
+
+    if (!errorWasThrowed) {
+      throw new HasToThrowAnErrorError()
+    }
+  }
+}
+</script>
+    <script>
+const ExpectDictionary = class {
+  constructor(actual) {
+    this.hasToBeDifferentDictionaries = false
+    this.actual = actual
+  }
+
+  get not() {
+    this.hasToBeDifferentDictionaries = true
+
+    return this
+  }
+
+  toBe(expected) {
+    const haveDifferentQuantityOfKeys = this._haveDifferentQuantityOfKeys(this.actual, expected)
+    const haveDifferentKeys = this._haveDifferentKeys(this.actual, expected)
+    const haveDifferentValues = this._haveDifferentValues(this.actual, expected)
+
+    if (this.hasToBeDifferentDictionaries) {
+      const areTheSameDictionary = (!haveDifferentQuantityOfKeys && !haveDifferentKeys && !haveDifferentValues)
+
+      if (areTheSameDictionary) {
+        throw new DictionariesAreEqualError()
+      }
+    } else {
+      if (haveDifferentQuantityOfKeys) {
+        throw new HaveDifferentKeysQuantityError(this.actual, expected)
+      }
+
+      if (haveDifferentKeys) {
+        throw new HaveDifferentKeysError(this.actual, expected)
+      }
+
+      if(haveDifferentValues) {
+        throw new HaveDifferentValuesError(this.actual, expected)
+      }
+    }
+  }
+
+  _haveDifferentQuantityOfKeys(actual, expected) {
+    const actualKeys = Object.keys(actual)
+    const expectedKeys = Object.keys(expected)
+
+    const haveDifferentQuantityOfKeys = (actualKeys.length !== expectedKeys.length)
+
+    return haveDifferentQuantityOfKeys
+  }
+
+  _haveDifferentKeys(actual, expected) {
+    const actualKeys = Object.keys(actual)
+    const expectedKeys = Object.keys(expected)
+    let haveDifferentKeys = false
+
+    actualKeys.forEach(key => {
+      if(!expectedKeys.includes(key)) {
+        haveDifferentKeys = true
+      }
+    })
+    expectedKeys.forEach(key => {
+      if(!actualKeys.includes(key)) {
+        haveDifferentKeys = true
+      }
+    })
+
+    return haveDifferentKeys
+  }
+
+  _haveDifferentValues(actual, expected) {
+    let haveDifferentValues = false
+
+    for(let [index, value] of Object.entries(actual)) {
+      if(expected[index] !== value) {
+        haveDifferentValues = true
+      }
+    }
+    for(let [index, value] of Object.entries(expected)) {
+      if(actual[index] !== value) {
+        haveDifferentValues = true
+      }
+    }
+
+    return haveDifferentValues
+  }
+
+  _equal(value, anotherValue) {
+    return (value === anotherValue)
+  }
+}
+</script>
+    <script>
+class ExpectLists {
+  constructor(actual) {
+    this.actual = actual
+    this.conditionForThrowError = this._notEqual
+    this.isNegated = false
+  }
+
+  get not() {
+    this.conditionForThrowError = this._equal
+    this.isNegated = true
+
+    return this
+  }
+
+  toBe(expected) {
+    if (this._conditionForThrowErrorBySizes(expected)) { throw new ListWithDifferentSizesError(this.actual, expected, this.isNegated) }
+    if (this._conditionForThrowErrorByValues(expected)) { throw new ListWithDifferentValuesError(this.actual, expected, this.isNegated) }
+    if (this._conditionForThrowErrorByOrders(expected)) { throw new ListWithDifferentOrderError(this.actual, expected, this.isNegated) }
+  }
+
+  _conditionForThrowErrorBySizes(expected) {
+    return this.conditionForThrowError(this.actual.length, expected.length)
+  }
+
+  _conditionForThrowErrorByValues(expected) {
+    const clonedActual = [...this.actual]
+    const cloneExpected = [...expected]
+    const sortedActual = clonedActual.sort()
+    const sortedExpected = cloneExpected.sort()
+
+    return this.conditionForThrowError(this._toString(sortedActual), this._toString(sortedExpected))
+  }
+
+  _conditionForThrowErrorByOrders(expected) {
+    return this.conditionForThrowError(this._toString(this.actual), this._toString(expected))
+  }
+
+  _toString(value) {
+    return JSON.stringify(value)
+  }
+
+  _equal(value, anotherValue) {
+    return value === anotherValue
+  }
+
+  _notEqual(value, anotherValue) {
+    return value !== anotherValue
+  }
+}
+</script>
+    <script>
+const ExpectNull = class {
+  constructor(actual) {
+    this.conditionForThrowError = this._notEqual
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.conditionForThrowError = this._equal
+    this.isNegated = true
+
+    return this
+  }
+
+  toBeNull() {
+    if (this.conditionForThrowError()) {
+      throw this._expectationError()
+    }
+  }
+
+  _expectationError() {
+    if (this.isNegated) {
+      return new ActualIsNotNullError(this.actual)
+    } else {
+      return new ActualIsNullError(this.actual)
+    }
+  }
+
+  _notEqual() {
+    return (this.actual !== null)
+  }
+
+  _equal() {
+    return (this.actual === null)
+  }
+}
+</script>
+    <script>
+const ExpectToBeUndefined = class {
+  constructor(actual) {
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  toBeUndefined() {
+    if (this.isNegated) {
+      this._throwAnErrorIfIsUndefined()
+    } else {
+      this._throwAnErrorIfIsNotUndefined()
+    }
+  }
+
+  _throwAnErrorIfIsUndefined() {
+    if(this._isUndefined()) {
+      throw new ActualIsUndefinedError(this.actual)
+    }
+  }
+
+  _throwAnErrorIfIsNotUndefined() {
+    if(this._isNotUndefined()) {
+      throw new ActualIsNotUndefinedError(this.actual)
+    }
+  }
+
+  _isUndefined() {
+    return (this.actual === undefined)
+  }
+
+  _isNotUndefined() {
+    return (this.actual !== undefined)
+  }
+}
+</script>
+    <script>
+const ExpectToIncludeElement = class {
+  constructor(actual) {
+    this._throwErrorIfIsNotAList(actual)
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  include(expected) {
+    if (this.isNegated) {
+      this._throwAnErrorIfActualIncludes(expected)
+    } else {
+      this._throwAnErrorIfActualDoesNotInclude(expected)
+    }
+  }
+
+  _throwAnErrorIfActualIncludes(expected) {
+    if (this._isActualIncluding(expected)) {
+      throw new ExpectedIsIncludedInActualListError(this.actual, expected)
+    }
+  }
+
+  _throwAnErrorIfActualDoesNotInclude(expected) {
+    if (this._isNotActualIncluding(expected)) {
+      throw new ExpectedIsNotIncludedInActualListError(this.actual, expected)
+    }
+  }
+
+  _throwErrorIfIsNotAList(actual) {
+    if (this._isNotAList(actual)) {
+      throw new ExpectedIsNotAListError(actual)
+    }
+  }
+
+  _isNotAList(actual) {
+    return (!Array.isArray(actual))
+  }
+
+  _isActualIncluding(expected) {
+    return (this.actual.includes(expected))
+  }
+
+  _isNotActualIncluding(expected) {
+    return (!this.actual.includes(expected))
+  }
+}
+</script>
+    <script>
+const ExpectToIncludeSubstring = class {
+  constructor(actual) {
+    this._throwAnErrorIfIsNotString(actual)
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  include(expected) {
+    if (this.isNegated) {
+      this._throwAnErrorIfActualIncludes(expected)
+    } else {
+      this._throwAnErrorIfActualDoesNotIncludes(expected)
+    }
+  }
+
+  _throwAnErrorIfIsNotString(value) {
+    const isNotValueAString = (typeof value !== 'string')
+
+    if (isNotValueAString) {
+      throw new ExpectedIsNotAStringError(actual)
+    }
+  }
+
+  _throwAnErrorIfActualIncludes(expected) {
+    if (this._isActualIncluding(expected)) {
+      throw new ExpectedIsIncludedInActualStringError(this.actual, expected)
+    }
+  }
+
+  _throwAnErrorIfActualDoesNotIncludes(expected) {
+    if (this._isNotActualIncluding(expected)) {
+      throw new ExpectedIsNotIncludedInActualStringError(this.actual, expected)
+    }
+  }
+
+  _isActualIncluding(expected) {
+    return (this.actual.includes(expected))
+  }
+
+  _isNotActualIncluding(expected) {
+    return (!this.actual.includes(expected))
+  }
+}
+</script>
+    <script>
+const ExpectTruth = class {
+  constructor(actual) {
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  toBeTruthy() {
+    if (this.isNegated) {
+      this._throwAnErrorIfActualIsTruthy()
+    } else {
+      this._throwAnErrorIfActualIsNotTruthy()
+    }
+  }
+
+  _throwAnErrorIfActualIsNotTruthy() {
+    if (!this.actual) {
+      throw new ActualIsNotTruthyError(this.actual)
+    }
+  }
+
+  _throwAnErrorIfActualIsTruthy() {
+    if (this.actual) {
+      throw new ActualIsTruthyError(this.actual)
+    }
+  }
+}
+</script>
+    <script>
+const ExpectToBeFalsy = class {
+  constructor(actual) {
+    this.isNegated = false
+
+    this.actual = actual
+  }
+
+  get not() {
+    this.isNegated = true
+
+    return this
+  }
+
+  toBeFalsy() {
+    if (this.isNegated) {
+      this._throwAnErrorIfActualIsFalsy()
+    } else {
+      this._throwAnErrorIfActualIsNotFalsy()
+    }
+  }
+
+  _throwAnErrorIfActualIsFalsy() {
+    if (!this.actual) {
+      throw new ActualIsFalsyError(this.actual)
+    }
+  }
+
+  _throwAnErrorIfActualIsNotFalsy() {
+    if (this.actual) {
+      throw new ActualIsNotFalsyError(this.actual)
+    }
+  }
+}
+</script>
+    <script>
+class Expect {
+  constructor(actual) {
+    this.actual = actual
+    this.conditionForThrowError = this._notEqual
+    this.isNegated = false
+  }
+
+  get not() {
+    this.conditionForThrowError = this._equal
+    this.isNegated = true
+
+    return this
+  }
+
+  toBe(expected) {
+    if (expected === RellenameCorrectamente) { throw new UnsolvedKoanError() }
+
+    if (this._hasToCompareLists(expected)) {
+      this._compareListsActualAnd(expected)
+    } else if (this._hasToCompareDictionaries(expected)) {
+      this._compareDictionariesActualAnd(expected)
+    } else if (this.conditionForThrowError(this.actual, expected)) {
+      throw new ActualAndExpectedValueDoNotMatchError(this.actual, expected, this.isNegated)
+    }
+  }
+
+  toBeTruthy() {
+    if (this.isNegated) {
+      new ExpectTruth(this.actual).not.toBeTruthy()
+    } else {
+      new ExpectTruth(this.actual).toBeTruthy()
+    }
+  }
+
+  toBeFalsy() {
+    if (this.isNegated) {
+      new ExpectToBeFalsy(this.actual).not.toBeFalsy()
+    } else {
+      new ExpectToBeFalsy(this.actual).toBeFalsy()
+    }
+  }
+
+  toBeNull() {
+    if (this.isNegated) {
+      new ExpectNull(this.actual).not.toBeNull()
+    } else {
+      new ExpectNull(this.actual).toBeNull()
+    }
+  }
+
+  toThrowAnError(expected) {
+    if (this.isNegated) {
+      new ExpectAnError(this.actual).not.toThrowAnError(expected)
+    } else {
+      new ExpectAnError(this.actual).toThrowAnError(expected)
+    }
+  }
+
+  toBeUndefined() {
+    if (this.isNegated) {
+      new ExpectToBeUndefined(this.actual).not.toBeUndefined()
+    } else {
+      new ExpectToBeUndefined(this.actual).toBeUndefined()
+    }
+  }
+
+  include(expected) {
+    if (this._isActualAString()) {
+      this._checkIfActualIncludesSubstring(expected)
+    } else if (this._isActualAList()) {
+      this._checkIfActualIncludesElement(expected)
+    } else {
+      throw new OnlyCanUseIncludeMatcherIfActualIsAStringOrListError()
+    }
+  }
+
+  _checkIfActualIncludesSubstring(expected) {
+    if (this.isNegated) {
+      new ExpectToIncludeSubstring(this.actual).not.include(expected)
+    } else {
+      new ExpectToIncludeSubstring(this.actual).include(expected)
+    }
+  }
+
+  _checkIfActualIncludesElement(expected) {
+    if (this.isNegated) {
+      new ExpectToIncludeElement(this.actual).not.include(expected)
+    } else {
+      new ExpectToIncludeElement(this.actual).include(expected)
+    }
+  }
+
+  _compareListsActualAnd(expected) {
+    if (this.isNegated) {
+      new ExpectLists(this.actual).not.toBe(expected)
+    } else {
+      new ExpectLists(this.actual).toBe(expected)
+    }
+  }
+
+  _compareDictionariesActualAnd(expected) {
+    if (this.isNegated) {
+      new ExpectDictionary(this.actual).not.toBe(expected)
+    } else {
+      new ExpectDictionary(this.actual).toBe(expected)
+    }
+  }
+
+  _hasToCompareLists(expected) {
+    return (Array.isArray(expected) && this._isActualAList())
+  }
+
+  _isActualAList() {
+    return Array.isArray(this.actual)
+  }
+
+  _isActualAString() {
+    return (typeof this.actual === 'string')
+  }
+
+  _hasToCompareDictionaries(expected) {
+    const expectedIsADictionary = this._isADictionary(expected)
+    const actualIsADictionary = this._isADictionary(this.actual)
+
+    return expectedIsADictionary && actualIsADictionary
+  }
+
+  _isADictionary(value) {
+    if (value === null) { return false }
+
+    return (typeof value === 'object' && value.constructor === Object)
+  }
+
+  _equal(value, anotherValue) {
+    return value === anotherValue
+  }
+
+  _notEqual(value, anotherValue) {
+    return value !== anotherValue
+  }
+}
+</script>
+    <script>
+let drawer = new Drawer(document)
+let currentTestSuit = null
+let testSuitsRunning = []
+const beforeEachHooks = Hooks.empty()
+const afterAllHooks = Hooks.empty()
+const afterEachHooks = Hooks.empty()
+let passingTestCount = 0
+let failingTestCount = 0
+let skippingTestCount = 0
+
+
+SyntaxErrorListener.onErrorExecute(() => {
+  drawer.syntaxError()
+})
+
+const beforeAll = (hook) => {
+  try {
+    hook()
+  } catch(error) {
+    drawer.errorInBeforeAll(normalize(error))
+  }
+}
+
+const beforeEach = (hook) => {
+  beforeEachHooks.add(currentTestSuit, hook)
+}
+
+const afterAll = (hook) => {
+  afterAllHooks.add(currentTestSuit, hook)
+}
+
+const afterEach = (hook) => {
+  afterEachHooks.add(currentTestSuit, hook)
+}
+
+const cleanHooks = () => {
+  beforeEachHooks.clean(currentTestSuit)
+  afterAllHooks.clean(currentTestSuit)
+  afterEachHooks.clean(currentTestSuit)
+}
+
+const markAsRunning = (subjectUnderTest) => {
+  currentTestSuit = subjectUnderTest
+  testSuitsRunning.push(subjectUnderTest)
+}
+
+const unmarkAsRunning = (subjectUnderTest) => {
+  currentTestSuit = null
+  testSuitsRunning = testSuitsRunning.filter(suit => suit !== subjectUnderTest)
+}
+
+const NO_TEST_SUIT_PROVIDED = () => {}
+const describe = (subjectUnderTest, testSuit=NO_TEST_SUIT_PROVIDED) => {
+  drawer.subjectUnderTest(subjectUnderTest)
+  markAsRunning(subjectUnderTest)
+
+  testSuit()
+  afterAllHooks.execute(testSuitsRunning)
+
+  cleanHooks()
+  unmarkAsRunning(subjectUnderTest)
+}
+
+const NO_TEST_PROVIDED = () => {}
+const it = (description, test=NO_TEST_PROVIDED) => {
+  try {
+    beforeEachHooks.execute(testSuitsRunning)
+
+    test()
+
+    passingTestCount ++
+    drawer.passingTestCount(passingTestCount)
+    afterEachHooks.execute(testSuitsRunning)
+    drawer.testPassing(description)
+  } catch (error) {
+    failingTestCount ++
+
+    if (failingTestCount > 1) {
+      skip(description)
+    } else {
+      drawer.testFailing(description, normalize(error))
+    }
+  }
+}
+
+const skip = (description, _) => {
+  drawer.skippedTest(description)
+
+  skippingTestCount++
+  drawer.skippingTestCount(skippingTestCount)
+}
+
+const expect = (actual) => {
+  if (actual === RellenameCorrectamente) { throw new UnsolvedKoanError() }
+
+  return new Expect(actual)
+}
+
+const normalize = (error) => {
+  if (error.isExpectationError) { return error }
+
+  return new NormalError(error)
+}
+
+onLoadMoveDocumentToFirstTestFailing()
+</script>
+  <script src="1-Tests.js"></script>
+  <script src="2-Booleanos.js"></script>
+  <script src="3-OperadoresBooleanos.js"></script>
+  <script src="4-Igualdad.js"></script>
+  <script src="5-Integers.js"></script>
+  <script src="6-Floats.js"></script>
+  <script src="7-AsignaciónDeVariables.js"></script>
+  <script src="8-Funciones.js"></script>
+  <script src="9-DIY.js"></script>
+  <script src="10-Strings.js"></script>
+  <script src="11-If.js"></script>
+  <script src="12-ElTriangulo.js"></script>
+  <script src="13-Undefined.js"></script>
+  <script src="14-Else.js"></script>
+  <script src="15-Greeting.js"></script>
+  <script src="16-Null.js"></script>
+  <script src="17-ElseIf.js"></script>
+  <script src="18-FizzBuzz.js"></script>
+  <script src="19-MasCosasOpcionales.js"></script>
+  <script src="20-Clases101.js"></script>
+  <script src="21-StringsEpisodioII.js"></script>
+  <script src="22-GreetingsPro.js"></script>
+  <script src="23-Bucles.js"></script>
+  <script src="24-MarsRover.js"></script>
+  <script src="25-Arrays.js"></script>
+  <script src="26-GreetingsMegaPro.js"></script>
+  <script src="27-StringsEpisodioIII.js"></script>
+  <script src="28-StringsCalculator.js"></script>
+  <script src="29-MetodosDeClase.js"></script>
+  <script src="30-ArraysII.js"></script>
+  <script src="31-MasterMind.js"></script>
+  <script src="32-Diccionarios.js"></script>
+  <script src="33-MarsRoverTurbo.js"></script>
+  <script src="34-elseif-vs-switch-vs-mapa.js"></script>
+  <script src="35-HerenciaEnLasClases.js"></script>
+  <script src="36-Ordenadores.js"></script>
+  <script src="37-AsignacionesCondicionales.js"></script>
+  <script src="38-LanzarYCapturarErrores.js"></script>
+  <script src="39-RompiendoElTriangulo.js"></script>
+  <script src="40-Destructuring.js"></script>
+  <script src="41-SpreadOperator.js"></script>
+  <script src="42-PotterBooks.js"></script>
+  <script src="43-GettersAndSetters.js"></script>
+  <script src="44-Scope.js"></script>
+  <script src="45-ObjetosGlobales.js"></script>
+  <script src="46-GameOfLife.js"></script>
+  <script src="47-Creditos.js"></script>
+</body>
+</html>
