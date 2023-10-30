@@ -25,10 +25,10 @@ describe('8-Funciones.js', () => {
     // el 4 se le asignará al argumento que se llama "unNumero" porque van primero y
     // luego el 1 se le asignará al argumento "otroNumero" y como estamos ejecutando
     // la función nos devuelve lo que tiene la suma de los dos números.
-    expect(funcionParaSumar(1, 3)).toBe(RellenameCorrectamente)
-    expect(funcionParaSumar(6, 8)).toBe(RellenameCorrectamente)
-    expect(funcionParaSumar(123431, 23451)).toBe(RellenameCorrectamente)
-    expect(funcionParaSumar(2.34, 10)).toBe(RellenameCorrectamente)
+    expect(funcionParaSumar(1, 3)).toBe(4)
+    expect(funcionParaSumar(6, 8)).toBe(14)
+    expect(funcionParaSumar(123431, 23451)).toBe(146882)
+    expect(funcionParaSumar(2.34, 10)).toBe(12.34)
     // Nota: Hay más maneras de definir funciones, las veremos ;)
   })
 
@@ -41,13 +41,13 @@ describe('8-Funciones.js', () => {
     // esta variable ya es como cualquier otra, pero en lugar de contener
     // el resultado de una operación directamente, se guarda el resultado
     //  de ejecutar nuestra función.
-    expect(resultado).toBe(RellenameCorrectamente)
-    expect(resultado + 1).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(40)
+    expect(resultado + 1).toBe(41)
 
     let otroResultado = operacionCompleja(89, 123)
 
-    expect(otroResultado).toBe(RellenameCorrectamente)
-    expect(resultado + otroResultado).toBe(RellenameCorrectamente)
+    expect(otroResultado).toBe(178)
+    expect(resultado + otroResultado).toBe(218)
   })
 
   it('que puede contener las funciones', () => {
@@ -64,7 +64,7 @@ describe('8-Funciones.js', () => {
 
     let resultado = calcularPorcentaje(1000, 25)
 
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(250)
 
     // ¡Aquí viene! Funciones con funciones dentro, !CUIDADO! ;P
     calcularPorcentaje = function(total, porcentaje) {
@@ -80,7 +80,7 @@ describe('8-Funciones.js', () => {
     // pero así se ve que puede contener algo más que variables.
     resultado = calcularPorcentaje(1000, 25)
 
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(250)
   })
 
   it('¿cuantos argumentos pueden recibir?', () => {
@@ -94,10 +94,10 @@ describe('8-Funciones.js', () => {
       return esMultipleDeDos
     }
 
-    expect(esPar(4)).toBe(RellenameCorrectamente)
-    expect(esPar(9)).toBe(RellenameCorrectamente)
-    expect(esPar(358)).toBe(RellenameCorrectamente)
-    expect(esPar(13247984371)).toBe(RellenameCorrectamente)
+    expect(esPar(4)).toBe(true)
+    expect(esPar(9)).toBe(false)
+    expect(esPar(358)).toBe(true)
+    expect(esPar(13247984371)).toBe(false)
 
     let esTresPar = function() {
       // No recibe nada, esta caso es un poco forzado,
@@ -105,7 +105,7 @@ describe('8-Funciones.js', () => {
       return (3 % 2) === 0
     }
     // ¡Hey! También pueden devolver resultados de operaciones booleanas ^^
-    expect(esTresPar()).toBe(RellenameCorrectamente)
+    expect(esTresPar()).toBe(false)
     // MUY IMPORTANTE, aunque la función no reciba ningún argumento, hay que
     // poner los paréntesis. Los paréntesis es lo que usamos para ejecutar las funciones.
     let operacionMounstruosa = function(unNumero, otroNumero, otroNumeroMas, meEmpiezoAQuedarSinNombres, mas, yMas) {
@@ -113,7 +113,7 @@ describe('8-Funciones.js', () => {
       return unNumero + otroNumero + otroNumeroMas + meEmpiezoAQuedarSinNombres + mas + yMas
     }
 
-    expect(operacionMounstruosa(1,1,1,1,1,1)).toBe(RellenameCorrectamente)
+    expect(operacionMounstruosa(1,1,1,1,1,1)).toBe(6)
   })
 
   it('¿cuantas cosas pueden devolver?', () => {
@@ -127,8 +127,8 @@ describe('8-Funciones.js', () => {
       // después de la palabra "return".
     }
 
-    expect(esImpar(3)).toBe(RellenameCorrectamente)
-    expect(esImpar(6)).toBe(RellenameCorrectamente)
+    expect(esImpar(3)).toBe(true)
+    expect(esImpar(6)).toBe(false)
     // Ahora es cuando se piensas, pues ponemos dos veces "return" :)
     // en el siguiente test, lo probamos y vemos que pasa.
 
@@ -138,7 +138,7 @@ describe('8-Funciones.js', () => {
       // el un valor undefined.WW
     }
     // Si no definimos lo que devuelve, pues el resultado es indefinido
-    expect(descubrirElNumeroDeLaLoteria()).toBe(RellenameCorrectamente)
+    expect(descubrirElNumeroDeLaLoteria()).toBe(undefined)
     // Si no sabes cómo rellenarlo, usa cualquier valor en el toBe y
     // ejecuta los test para ver qué sale ;)
   })
@@ -151,7 +151,7 @@ describe('8-Funciones.js', () => {
     }
     // El primer return que se ejecuta marca el fin de la función, todo el
     // código que pongas después, no se ejecutará.
-    expect(funcionConVariosReturns()).toBe(RellenameCorrectamente)
+    expect(funcionConVariosReturns()).toBe(142)
   })
 
   it('qué ocurre, si no ejecuto la función al usarla', () => {
@@ -161,7 +161,7 @@ describe('8-Funciones.js', () => {
 
     // Mira el error atentamente y luego lee los comentarios que hay debajo
     // del expect
-    expect(unaFuncionCualquiera).toBe('unaFuncionCualquiera')
+    expect(unaFuncionCualquiera).toBe(unaFuncionCualquiera)
     // Este expect esta solo para que veas en los tests como se ve
     // una función sin ejecutar. Lo que se ve es la definición en lugar
     // de la ejecución.
@@ -177,11 +177,11 @@ describe('8-Funciones.js', () => {
     // "Arrow Function"
     let arrowFunction = (unNumero, otroNumero) => { return unNumero + otroNumero }
 
-    expect(arrowFunction(6, 3)).toBe(RellenameCorrectamente)
+    expect(arrowFunction(6, 3)).toBe(9)
 
     // "Common function"
     function commonFunction(unNumero, otroNumero) { return unNumero + otroNumero }
 
-    expect(commonFunction(6, 13)).toBe(RellenameCorrectamente)
+    expect(commonFunction(6, 13)).toBe(19)
   })
 })

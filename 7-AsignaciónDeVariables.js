@@ -10,6 +10,7 @@ describe('7-AsignaciónDeVariables.js', () => {
   // Es mucho más fácil de entender viéndolo, que leyéndolo.
   it('definir una variable', () => {
     let soyUnaVariableSinValor
+    let soyOtraVariableSinValor
     // Hay varias maneras de crear variables, por ahora usaremos 'let' seguido
     // del nombre que le queramos dar a la variable
     expect(soyUnaVariableSinValor).toBeUndefined()
@@ -34,7 +35,7 @@ describe('7-AsignaciónDeVariables.js', () => {
     // con un igual simple, le asignamos un valor
     soyUnaVariableMas = 3
     // Entonces ¿Cuál será el valor de la variable?
-    expect(soyUnaVariableMas).toBe(RellenameCorrectamente)
+    expect(soyUnaVariableMas).toBe(3)
   })
 
   it('reasignar valores a una variable', () => {
@@ -44,13 +45,13 @@ describe('7-AsignaciónDeVariables.js', () => {
     let soyUnaVariableQueVariaMiValor
 
     soyUnaVariableQueVariaMiValor = 1
-    expect(soyUnaVariableQueVariaMiValor).toBe(RellenameCorrectamente)
+    expect(soyUnaVariableQueVariaMiValor).toBe(1)
 
     soyUnaVariableQueVariaMiValor = false
-    expect(soyUnaVariableQueVariaMiValor).toBe(RellenameCorrectamente)
+    expect(soyUnaVariableQueVariaMiValor).toBe(false)
 
     soyUnaVariableQueVariaMiValor = 4134213476734.1746548376548
-    expect(soyUnaVariableQueVariaMiValor).toBe(RellenameCorrectamente)
+    expect(soyUnaVariableQueVariaMiValor).toBe(4134213476734.1746548376548)
   })
 
   it('crear y asignar', () => {
@@ -59,7 +60,7 @@ describe('7-AsignaciónDeVariables.js', () => {
     // ¿Te imaginas que se puede hacer todo a la vez? ^^
     let todoALaVez = 88
 
-    expect(todoALaVez).toBe(RellenameCorrectamente)
+    expect(todoALaVez).toBe(88)
     // Esto nos va a ahorrar un montón de líneas ;P
   })
 
@@ -68,20 +69,20 @@ describe('7-AsignaciónDeVariables.js', () => {
     // asignar valores y operaciones
     let resultado = 2 * 3
     // ¿?
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(6)
     // Igual que resultados de operaciones matemáticas, se pueden guardar
     // resultados de operaciones booleanas
     resultado = true || false
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(true)
     resultado = (true || false) && false
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(false)
     resultado = (3 === 3.0)
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(true)
     resultado = ((30 % 3.0) === 0)
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(true)
     // Si no tienes testamento, es el momento de hacerlo xD
     resultado = ((((32 * 4) + 15) === ((68 * 2) + 3)) && true)
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(false)
   })
   // Por ahora este es el archivo más largo que te has encontrado. Será...
   // Porque... lo de las variables... ¿Es importante?
@@ -93,17 +94,17 @@ describe('7-AsignaciónDeVariables.js', () => {
     let unValorNumerico = 7
     let otroValorNumerico = 9
 
-    expect(unValorNumerico * otroValorNumerico).toBe(RellenameCorrectamente)
+    expect(unValorNumerico * otroValorNumerico).toBe(63)
     // Como se pueden operar variables, se puede guardar la operación entre
     // dos variables
     let resultado = unValorNumerico * otroValorNumerico
     // siempre le pongo de nombre resultado, pero no es obligado, se puede
     // poner el nombre que queramos
-    expect(resultado).toBe(RellenameCorrectamente)
+    expect(resultado).toBe(63)
 
     let cualquierNombre = resultado
 
-    expect(cualquierNombre).toBe(RellenameCorrectamente)
+    expect(cualquierNombre).toBe(63)
   })
   // Vamos a ver si a quedado claro de verdad
   it('ejercitemos las variables', () => {
@@ -111,19 +112,19 @@ describe('7-AsignaciónDeVariables.js', () => {
     let seis = 6
     // No vale escribir un numero, lo tienes que resolver todo con las
     // variables que hay.
-    let resultado = RellenameCorrectamente
+    let resultado = tres*seis
 
     expect(resultado).toBe(18)
 
-    resultado = RellenameCorrectamente
+    resultado = tres+seis
 
     expect(resultado).toBe(9)
 
-    resultado = RellenameCorrectamente
+    resultado = seis-tres
 
     expect(resultado).toBe(3)
 
-    resultado = RellenameCorrectamente
+    resultado = seis%tres
 
     expect(resultado).toBe(0) // Acuérdate del módulo %
   })
@@ -135,7 +136,7 @@ describe('7-AsignaciónDeVariables.js', () => {
     // mayúsculas la letra que iría después de un espacio.
     // Esta frase la voy a escribir como nombre de variable
     // estaFraseLaVoyAEscribirComoNombreDeVariable
-    expect(false).toBe(true) // Este esta solo para parar aquí, es fácil de solucionar ;)
+    expect(false).toBe(false) // Este esta solo para parar aquí, es fácil de solucionar ;)
     // Ahora estarás deseando decir, pues si los nombres de las variables se
     // se escriben en camelCase, ¿Que pasa con RellenameCorrectamentee?
     // Pues como pone CASI todas van en camelCase, unas pocas van en PascalCase ^^
@@ -145,9 +146,10 @@ describe('7-AsignaciónDeVariables.js', () => {
   it('el orden importa', () => {
     // Claro, siempre hay que crear y declarar una variable antes de usarla
     // (En este test no hay que escribir solo hay que mover código de línea)
+    let declarameAntesDeUsarMe = 22
     expect(declarameAntesDeUsarMe).toBe(22)
     // Lee atentamente el error
-    let declarameAntesDeUsarMe = 22
+    
   })
   // Estás a un fichero de koans de saber programar ;P
  })
