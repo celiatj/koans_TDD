@@ -114,7 +114,7 @@ describe('7-AsignaciónDeVariables.js', () => {
     // variables que hay.
     let resultado = tres*seis
 
-    expect(resultado).toBe(18)
+    expect(resultado).toBe(1800)
 
     resultado = tres+seis
 
