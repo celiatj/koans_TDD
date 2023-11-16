@@ -14,28 +14,28 @@ describe('10-Strings.js', () => {
 
     let string = 'Soy una String'
 
-    expect(string).toBe(RellenameCorrectamente)
+    expect(string).toBe('Soy una String')
   })
   // Fácil!!!
   it('como cualquier otro tipo de valor, se pueden compara', () => {
 
     let string = 'Un valor'
 
-    expect(string === 'Un valor').toBe(RellenameCorrectamente)
-    expect(string === 'UN VALOR').toBe(RellenameCorrectamente)
-    expect(string === 'Un valoR').toBe(RellenameCorrectamente)
-    expect(string === 'Un valoR').toBe(RellenameCorrectamente)
+    expect(string === 'Un valor').toBe(true)
+    expect(string === 'UN VALOR').toBe(false)
+    expect(string === 'Un valoR').toBe(false)
+    expect(string === 'Un valoR').toBe(false)
   })
   // Aprender nuevos tipos, empieza a ser fácil ^^
   it('¿Qué caracteres pueden contener?', () => {
     // Pues cualquier cosa, números, letras, símbolos, emojis, etc...
     // Asignar a la variable "asignameUnValor" el valor que le hace falta
     // para pasar el expect.
-    let asignameUnValor
+    let asignameUnValor='1234567890'
     expect(asignameUnValor).toBe('1234567890')
-    asignameUnValor
+    asignameUnValor='!"·$%&/()'
     expect(asignameUnValor).toBe('!"·$%&/()')
-    asignameUnValor
+    asignameUnValor='😀'
     expect(asignameUnValor).toBe('😀')
   })
 
@@ -45,21 +45,21 @@ describe('10-Strings.js', () => {
     // ¡QUE NO SON TEXTOS!, son strings ;P
     expect('1' + '1' + '1' + '1').toBe('1111')
     // Cuidado con el espacio en blanco después de la palabra "estamos"
-    expect('Nos estamos ' + 'sumando').toBe(RellenameCorrectamente)
+    expect('Nos estamos ' + 'sumando').toBe('Nos estamos sumando')
   })
 
   it('¿Se podrán sumar integers y strings?', () => {
     // Vamos a probarlo ^^
-    expect('Que pasa si sumamos ' + 1 + ' a esta string').toBe(RellenameCorrectamente)
+    expect('Que pasa si sumamos ' + 1 + ' a esta string').toBe('Que pasa si sumamos 1 a esta string')
   })
   // WOW! Estamos "on fire" (de moderno a carca, "on fire" === "nos estamos saliendo")
   it('¿Y si le sumamos una variable?', () => {
 
     let valorVariable = 3 * 8
     let unaString = 'pues una string'
-    expect(unaString + valorVariable + unaString).toBe(RellenameCorrectamente)
+    expect(unaString + valorVariable + unaString).toBe( 'pues una string24pues una string')
     // Ahora lo vamos a dejar mas guay
-    expect(unaString + ' ' + valorVariable + ' ' + unaString).toBe(RellenameCorrectamente)
+    expect(unaString + ' ' + valorVariable + ' ' + unaString).toBe("pues una string 24 pues una string")
   })
 
   it('se pueden convertir todo a mayúsculas', () => {
@@ -69,13 +69,13 @@ describe('10-Strings.js', () => {
     let stringEnMinusculas = 'todo mi contenido está en minúsculas'
     let stringEnMayusculas = stringEnMinusculas.toUpperCase()
 
-    expect(stringEnMayusculas).toBe(RellenameCorrectamente)
+    expect(stringEnMayusculas).toBe("TODO MI CONTENIDO ESTÁ EN MINÚSCULAS")
     // ¿Que crees que pasará si ya tiene alguna mayúscula?
     let stringConDeTodo = 'Un PoCo de TODO 1 * ¿'
 
     stringEnMayusculas = stringConDeTodo.toUpperCase()
 
-    expect(stringEnMayusculas).toBe(RellenameCorrectamente)
+    expect(stringEnMayusculas).toBe('UN POCO DE TODO 1 * ¿')
     // Como puedes ver, solo transforma a mayúsculas las letras en minúscula.
   })
 
@@ -84,7 +84,7 @@ describe('10-Strings.js', () => {
 
     let stringEnMinusculas = stringConDeTodo.toLowerCase()
 
-    expect(stringEnMinusculas).toBe(RellenameCorrectamente)
+    expect(stringEnMinusculas).toBe('un poco de todo 1 * ¿')
   })
 
   it('la String de comillas dobles', () => {
@@ -92,23 +92,23 @@ describe('10-Strings.js', () => {
     let stringConComillasSimples = 'Una string'
     let stringConComillasDobles = "Una string"
     // ¿Crees que una serán iguales? ^^
-    expect(RellenameCorrectamente).toBe(stringConComillasDobles)
+    expect(stringConComillasSimples).toBe(stringConComillasDobles)
     // Entonces si una es igual que otra, ¿qué diferencia existe?
     stringConComillasSimples = 'Aquí puedes usar "comillas dobles"'
     stringConComillasDobles = "Aquí puedes usar 'comillas simples'"
     // ¿Seguiran siendo iguales?
-    expect(stringConComillasSimples === stringConComillasDobles).toBe(RellenameCorrectamente)
+    expect(stringConComillasSimples === stringConComillasDobles).toBe(false)
     // ¿Se pueden usar comillas dobles dentro de una string con comillas dobles?
     // Si, pero tienes que escapar las comillas.
     // ¿Escapar? Si, es una forma de que los caracteres se interpreten de una
     // forma especial (Se escapa un carácter usando "\" antes del caracter).
     stringConComillasDobles = "Así se pueden escapar las \"comillas dobles\""
     // ¿Serán lo mismo?
-    expect(RellenameCorrectamente).toBe('Así se pueden escapar las "comillas dobles"')
+    expect(stringConComillasDobles).toBe('Así se pueden escapar las "comillas dobles"')
 
     stringConComillasSimples = 'Así se pueden escapar las \'comillas simples\''
     // Empizas a preguntarte
-    expect(RellenameCorrectamente).toBe("Así se pueden escapar las 'comillas simples'")
+    expect(stringConComillasSimples).toBe("Así se pueden escapar las 'comillas simples'")
     // Bueno, ya te he reventado con el tema de las comillas. Ya sabes que son iguales.
     // Solo cambia lo que hay que escapar dentro de una u otra.
     // Y ahora me preguntaras: - ¿Y por que siempre usas comillas simples?
@@ -123,14 +123,18 @@ describe('10-Strings.js', () => {
     // Crea una función que le pasemos dos cadenas de text y devuelva
     // true si son iguales y false si no lo son. Fácil, ¿no?
     // Escribe aquí tu código
-
-
+    function sonIguales(cadena1,cadena2){
+    if(cadena1===cadena2){return true}
+    return false
+    }
     expect(sonIguales('unaString', 'unaString')).toBe(true)
     expect(sonIguales('unaString', 'otraString')).toBe(false)
     // Ahora crea una función que le pasemos dos strings y nos devuelva
     // una string que sea la suma de las dos pasadas y todo en minúsculas.
     // Escribe aquí tu código
-
+function sumaEnMinusclas(cadena1,cadena2){
+  return (cadena1+cadena2).toLowerCase()
+}
 
     expect(sumaEnMinusclas('unastring', 'unastring')).toBe('unastringunastring')
     expect(sumaEnMinusclas('unastring', 'otrastring')).toBe('unastringotrastring')
@@ -145,26 +149,26 @@ describe('10-Strings.js', () => {
     // diferencias a primera vista es que usa comillas invertidas (backticks)
     let unTemplate = `soy un template`
     // ¿Se podrá comparar con los otros strings?
-    expect(unTemplate === 'soy un template').toBe(RellenameCorrectamente)
-    expect(unTemplate === "soy un template").toBe(RellenameCorrectamente)
+    expect(unTemplate === 'soy un template').toBe(true)
+    expect(unTemplate === "soy un template").toBe(true)
     // Estas pensando: - ¡La string definitiva!, tiene libres todas las comillas.
     unTemplate = `string con
 salto de linea`
     // No todo es lo que parece, te acuerdas cuando sumamos strings con números ^^
-    expect(unTemplate === 'string con salto de linea').toBe(RellenameCorrectamente)
-    expect(unTemplate === 'string con\nsalto de linea').toBe(RellenameCorrectamente)
+    expect(unTemplate === 'string con salto de linea').toBe(false)
+    expect(unTemplate === 'string con\nsalto de linea').toBe(true)
     // Puede que tenga algunas diferencias, por eso un fichero de tests aparte.
 
     // Otra cosa importante es que tu puedes interpolar valores dentro del template
     // con ${valor} (Mira la siguiente línea, es más fácil de entender)
     let templateConUnValor = `Tengo un ${1} como valor interpolado`
 
-    expect(templateConUnValor === 'Tengo un 1 como valor interpolado').toBe(RellenameCorrectamente)
-    expect(templateConUnValor === 'Tengo un ' + 1 + ' como valor interpolado').toBe(RellenameCorrectamente)
+    expect(templateConUnValor === 'Tengo un 1 como valor interpolado').toBe(true)
+    expect(templateConUnValor === 'Tengo un ' + 1 + ' como valor interpolado').toBe(true)
     // Si le podemos interpolar valores, le podemos interpolar variables
     let unValor = 10
     let templateConUnaVariable = `La multiplicación de ${unValor} por ${unValor} es ${unValor * unValor}`
-    expect(templateConUnaVariable === 'La multiplicación de 10 por 10 es 100').toBe(RellenameCorrectamente)
+    expect(templateConUnaVariable === 'La multiplicación de 10 por 10 es 100').toBe(true)
     // Aquí se le ve más utilidad ^^
     // Aunque lo de la interpolación se puede hacer sumando variables a una string, por ahora
     // solo lo hemos visto para que te suene.
