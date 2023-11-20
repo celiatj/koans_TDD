@@ -21,7 +21,7 @@ describe('11-If.js', () => {
     // le cambiara el valor a la variable.
 
     // Entonces, ¿qué valor tendrá la variable de abajo?
-    expect(cambiaraEsteValor).toBe(RellenameCorrectamente)
+    expect(cambiaraEsteValor).toBe('Como la condición es verdadera, cambiará ^^')
   })
   // Vamos a hacer un par más y luego haremos cosas muy chulas con esto ;)
   it('vamos a probar más cosas con el "if"', () => {
@@ -33,7 +33,7 @@ describe('11-If.js', () => {
       unValor = 10
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe(10)
     // ¡Más!
     unValor = 100
     // Ahora si el valor es igual a 10 cambiará la variable
@@ -42,14 +42,14 @@ describe('11-If.js', () => {
       unValor = 10
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe(100)
     // Otra
     unValor = '¿Somos iguales?'
     // Ahora si el valor es igual a una string (concreta) cambiará el valor
     if(unValor === '¿Somos iguales?') {
       unValor = unValor + unValor
     }
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe("¿Somos iguales?¿Somos iguales?")
     // Ahora algo más difícil y más preparación
     let esPar = function(unNumero) { return (unNumero % 2) === 0 }
     unValor = 'Es impar'
@@ -58,14 +58,14 @@ describe('11-If.js', () => {
       unValor = 'Es par'
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe('Es par')
   })
   // Ahora, tu.
   it('rellena correctamente', () => {
     let unValor = 'BRO'
     // Rellena la condición entre paréntesis para que ejecute el código
     // en el bloque de código entre llaves (¿Te suena?)
-    if(false) {
+    if(true) {
       unValor = 'DIY'
     }
 
@@ -73,7 +73,7 @@ describe('11-If.js', () => {
 
     // Ahora rellena el valor entre paréntesis para que no se ejecute
     // en el bloque de código entre llaves
-    if(true) {
+    if(false) {
       unValor = 'No existe ignorancia, sólo existe conocimiento.'
     }
 
@@ -83,7 +83,7 @@ describe('11-If.js', () => {
     // para que se ejecute el código del "if"
     let unNombre = 'Charlie'
     let otroNombre = 'Akira'
-    if(unNombre === otroNombre) {
+    if(unNombre !== otroNombre) {
       unValor = 'WOW'
     }
 
@@ -91,14 +91,14 @@ describe('11-If.js', () => {
     // ¡A tope!
     let ladosDeUnCuadrado = 4
     // ¿Qué habrá que cambiar?
-    if(ladosDeUnCuadrado === 40) {
+    if(ladosDeUnCuadrado*10 === 40) {
       unValor = ladosDeUnCuadrado
     }
 
     expect(unValor).toBe(4)
     // La última
     let alturaDeCharlie = 1.58
-    let alturaDeAkira = 1.78
+    let alturaDeAkira = 1.58
     let alturaDeMax = 1.58
     unValor = 'Alguien es más alto'
     // Esta condición significa que SI todos son igual de altos, se ejecutara el
@@ -116,7 +116,13 @@ describe('11-If.js', () => {
     // un nombre (string) y devuelve otra string saludando
     // al nombre que recibe (Aquí aún no usaras el "if")
     // Tu función va aquí abajo
+ function saluda(nombre){
+  if(nombre===""){
+    nombre="desconocido"
+  }
+  return "Saludos "+nombre
 
+ }
 
     expect(saluda('Akira')).toBe('Saludos Akira')
     expect(saluda('Charlie')).toBe('Saludos Charlie')
@@ -128,7 +134,14 @@ describe('11-If.js', () => {
     // DEVUELVA la string "es par" y SÍ es impar DEVUELVE
     // "es impar"
     // Tu función va aquí abajo
-
+ function esPar(unNumero){
+  let numero="es par";
+  
+  if(unNumero % 2 !== 0 || unNumero=== 0 ){
+    numero ="es impar"
+  }
+  return numero
+ }
 
     expect(esPar(2)).toBe('es par')
     expect(esPar(228)).toBe('es par')
