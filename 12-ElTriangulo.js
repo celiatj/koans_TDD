@@ -1,5 +1,4 @@
-
-describe('12-ElTriangulo.js', () => {
+describe("12-ElTriangulo.js", () => {
   // Tranquilidad, tocaba una Kata de código y a eso vamos.
   // La kata se llama: "El Triangulo".
   // Primero, ¿Qué es una kata de código?
@@ -15,7 +14,7 @@ describe('12-ElTriangulo.js', () => {
   // lados que tiene un triangulo y nos diga si es equilátero o
   // isósceles o escaleno.
   // Ok, con calma, desde aquí tienes que leer sin prisa ^^
-  it('nos dice que tipo de triangulo es dependiendo de el tamaño de sus lados', () => {
+  it("nos dice que tipo de triangulo es dependiendo de el tamaño de sus lados", () => {
     // Ahora vamos a traducir el problema en humano, a developer ;)
 
     // VAS a crear una función que va a recivir 3 integers, que serán el tamaño
@@ -25,22 +24,36 @@ describe('12-ElTriangulo.js', () => {
     // SI DOS de los lados son IGUALES, DEVUELVE la string "es isósceles"
     // Escribe tu función aquí abajo y haz que pasen todos los expects
 
+    function tipoDeTriangulo(lado1, lado2, lado3) {
+      let triangulo;
 
-    expect(tipoDeTriangulo(10, 10, 10)).toBe('es equilátero')
-    expect(tipoDeTriangulo(3, 3, 3)).toBe('es equilátero')
-    expect(tipoDeTriangulo(11, 7, 3)).toBe('es escaleno')
-    expect(tipoDeTriangulo(5, 99, 2)).toBe('es escaleno')
-    expect(tipoDeTriangulo(101, 10, 10)).toBe('es isósceles')
-    expect(tipoDeTriangulo(10, 101, 10)).toBe('es isósceles')
-    expect(tipoDeTriangulo(10, 10, 101)).toBe('es isósceles')
+      if (lado1===0 || lado2===0 || lado3 === 0) {
+        triangulo = "Triángulo imposible";
+      } else if (lado1 === lado2 && lado2 === lado3) {
+        triangulo = "es equilátero";
+      } else if (lado1 === lado2 || lado2 === lado3 || lado1 === lado3) {
+        triangulo = "es isósceles";
+      } else if (lado1 !== lado2 && lado2 !== lado3) {
+        triangulo = "es escaleno";
+      }
+
+      return triangulo;
+    }
+    expect(tipoDeTriangulo(10, 10, 10)).toBe("es equilátero");
+    expect(tipoDeTriangulo(3, 3, 3)).toBe("es equilátero");
+    expect(tipoDeTriangulo(11, 7, 3)).toBe("es escaleno");
+    expect(tipoDeTriangulo(5, 99, 2)).toBe("es escaleno");
+    expect(tipoDeTriangulo(101, 10, 10)).toBe("es isósceles");
+    expect(tipoDeTriangulo(10, 101, 10)).toBe("es isósceles");
+    expect(tipoDeTriangulo(10, 10, 101)).toBe("es isósceles");
     // Tu primera kata, ¿Divertido? ^^
     // ¡¡¡BONUS TRACK!!!
     // Ahora modifica tu función, para que SÍ ALGUNO de los tres lados es IGUAL A CERO
     // tiene que DEVOLVER "Triángulo imposible"
-    expect(tipoDeTriangulo(0, 11, 111)).toBe('Triángulo imposible')
-    expect(tipoDeTriangulo(1, 0, 111)).toBe('Triángulo imposible')
-    expect(tipoDeTriangulo(1, 0, 0)).toBe('Triángulo imposible')
-    expect(tipoDeTriangulo(0, 11, 0)).toBe('Triángulo imposible')
+    expect(tipoDeTriangulo(0, 11, 111)).toBe("Triángulo imposible");
+    expect(tipoDeTriangulo(1, 0, 111)).toBe("Triángulo imposible");
+    expect(tipoDeTriangulo(1, 0, 0)).toBe("Triángulo imposible");
+    expect(tipoDeTriangulo(0, 11, 0)).toBe("Triángulo imposible");
     // Si ves que se te complica mucho, te dejo comentar los 4 últimos expects.
-  })
-})
+  });
+});
