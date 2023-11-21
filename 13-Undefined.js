@@ -13,7 +13,7 @@ describe('13-Undefined.js', () => {
     // Este lo vimos al principio, pero lo repasamos por si acaso ;P
     let variableSinDefinirleUnValor
 
-    expect(variableSinDefinirleUnValor).toBe(RellenameCorrectamente)
+    expect(variableSinDefinirleUnValor).toBe(undefined)
   })
 
   it('también lo encontramos cuando una función no tiene return', () => {
@@ -22,14 +22,14 @@ describe('13-Undefined.js', () => {
       // No tiene return
     }
 
-    expect(funcionSinReturn()).toBe(RellenameCorrectamente)
+    expect(funcionSinReturn()).toBe(undefined)
 
     // O si tiene return, pero no dice que valor
     let funcionQueDevuelveNingunValor = function() {
       return
     }
 
-    expect(funcionQueDevuelveNingunValor()).toBe(RellenameCorrectamente)
+    expect(funcionQueDevuelveNingunValor()).toBe(undefined)
   })
 
   it('y también cuando no se le pasan los argumentos esperados a una función', () => {
@@ -38,7 +38,7 @@ describe('13-Undefined.js', () => {
       return unArgumentoEsperadoPeroNoPasado
     }
 
-    expect(unaFuncion()).toBe(RellenameCorrectamente)
+    expect(unaFuncion()).toBe(undefined)
   })
   // En bastante más ocasiones nos encontramos el valor undefined, pero ya las iremos
   // viendo. Ahora que sepas que existe.
@@ -50,13 +50,13 @@ describe('13-Undefined.js', () => {
       unValor = 'valor cambiado'
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe('valor original')
 
     if(undefined === false) {
       unValor = 'valor cambiado'
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe('valor original')
     // CHA!!!! NA!!!!! Aquí vendría sonido de suspense, pero esto es leído,
     // así que imaginación.
     // ¿Qué es lo que ha pasado? Pues que si tratamos undefined, como una
