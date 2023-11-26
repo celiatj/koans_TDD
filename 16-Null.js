@@ -12,13 +12,13 @@ describe('16-Null.js', () => {
   // (o similares) lo usan todos los lenguajes de programación (Que yo conozca).
   it('no es lo mismo que undefined', () => {
 
-    expect(undefined === null).toBe(RellenameCorrectamente)
+    expect(undefined === null).toBe(false)
 
     const valorCuandoSeLeAsignaNINGUNValor = null
     let valorCuandoNoSeLeAsigna
     // Nota: Esto es todo lo fácil que parece ser (No hay trucos).
-    expect(valorCuandoSeLeAsignaNINGUNValor).toBe(RellenameCorrectamente)
-    expect(valorCuandoNoSeLeAsigna).toBe(RellenameCorrectamente)
+    expect(valorCuandoSeLeAsignaNINGUNValor).toBe(null)
+    expect(valorCuandoNoSeLeAsigna).toBe(undefined)
     // Te dije que seria fácil. Espero que te dieras cuenta
     // de que una variable la declaré con "const" en lugar de con "let"
     // Si no te habias fijado... !TE RECUERDO QUE LEAS DESPACITO Y ATENTAMENTE!
@@ -37,9 +37,9 @@ describe('16-Null.js', () => {
       unValor = '¿o como falso?'
     }
 
-    expect(unValor).toBe(RellenameCorrectamente)
+    expect(unValor).toBe('¿o como falso?')
     // Entonces...
-    expect(null === false).toBe(RellenameCorrectamente)
+    expect(null === false).toBe(false)
   })
   // Como ves, también evalua falso, al igual que undefined. Por ahora
   // te aconsejo, que siempre que declares una variable tenga un valor
@@ -65,7 +65,7 @@ describe('16-Null.js', () => {
       cambiareDeValor = 'Como null no es igual a undefined, no cambiaré'
     }
 
-    expect(cambiareDeValor).toBe(RellenameCorrectamente)
+    expect(cambiareDeValor).toBe('Como null no es igual a undefined, no cambiaré')
     // ¿Has visto el error? Si no a sido así, voy a regodearme un poco mientras
     // te revanas los sesos xD
     // Como puedes ver en la condición del "if" no estamos comparando la variable
@@ -73,6 +73,6 @@ describe('16-Null.js', () => {
     // evalua como el valor que se le asigna, por lo que pasa a ser verdadero
     // y cambia el valor. Si hubiera usado "const" en la declaración me hubiera dado
     // un error en la reasignación. Entonces nunca se podría dar lo siguiente.
-    expect(unValorQueNoQuieroCambiarNunca).toBe(RellenameCorrectamente)
+    expect(unValorQueNoQuieroCambiarNunca).toBe(true)
   })
 })
