@@ -15,7 +15,11 @@ describe('15-Greeting.js', () => {
   // Esta vez vamos a escribir nuestra función fuera de los test, así
   // que lee atentamente los test antes de ponerte a escribir.
   // Escribe tu función aquí abajo:
-
+function greeting(nombre){
+  let saludo= `¡Hola ${nombre}!`
+  if(nombre==undefined) saludo ='¡Hola a todos!'
+  return saludo
+}
   it('saluda a todos cuando no le indican a quien tiene que saludar', () => {
 
     let saludo = greeting()
