@@ -1,5 +1,4 @@
-
-describe('18-FizzBuzz.js', () => {
+describe("18-FizzBuzz.js", () => {
   // Pues a por otra Katita. Posiblemente la Kata FizzBuzz sea la más
   // conocida de todas y como casi todos los problemas tiene un montón
   // de soluciones diferentes. Yo te recomiendo que la soluciones de la
@@ -36,27 +35,42 @@ describe('18-FizzBuzz.js', () => {
   // tu cuenta.
 
   // Escribe aquí abajo tu función
+  function fizzBuzz(numero) {
 
+    let respuesta = "";
+    const numberFizz = "Fizz";
+    const numberBuzz = "Buzz";
+    const numberDiviblefor5 = numero % 5;
+    const numberDiviblefor3 = numero % 3;
+
+    if (numero === 3 || numberDiviblefor3 === 0) {
+      respuesta = numberFizz;
+    }
+    if (numero === 5 || numberDiviblefor5 === 0) {
+      respuesta += "Buzz";
+    }
+    return respuesta;
+  }
 
   // Recuerda ir pasando una a uno cada expect. Sin prisa, escribe un poco
   // de código, prueba si funciona y escribe un poco más para pasar al siguiente.
   it('devuelve "Fizz" si el número es divisible entre 3', () => {
-    expect(fizzBuzz(3)).toBe("Fizz")
-    expect(fizzBuzz(6)).toBe("Fizz")
-    expect(fizzBuzz(33)).toBe("Fizz")
-  })
+    expect(fizzBuzz(3)).toBe("Fizz");
+    expect(fizzBuzz(6)).toBe("Fizz");
+    expect(fizzBuzz(33)).toBe("Fizz");
+  });
 
   it('devuelve "Buzz" si el número es divisible entre 5', () => {
-    expect(fizzBuzz(5)).toBe("Buzz")
-    expect(fizzBuzz(10)).toBe("Buzz")
-    expect(fizzBuzz(560)).toBe("Buzz")
-  })
+    expect(fizzBuzz(5)).toBe("Buzz");
+    expect(fizzBuzz(10)).toBe("Buzz");
+    expect(fizzBuzz(560)).toBe("Buzz");
+  });
 
   it('devuelve "FizzBuzz" si el número es divisible entre 3 y 5', () => {
-    expect(fizzBuzz(15)).toBe("FizzBuzz")
-    expect(fizzBuzz(30)).toBe("FizzBuzz")
-    expect(fizzBuzz(15000)).toBe("FizzBuzz")
-  })
+    expect(fizzBuzz(15)).toBe("FizzBuzz");
+    expect(fizzBuzz(30)).toBe("FizzBuzz");
+    expect(fizzBuzz(15000)).toBe("FizzBuzz");
+  });
   // Si has completado esta Koan por tu cuenta. Es todo un hito, ¡celebralo!
   // y no es broma. Esto es programar. Aun te quedan un montón de cosas por
   // aprender, pero eso siempre será así, esto de programar no se lo pasa nadie.
@@ -67,7 +81,7 @@ describe('18-FizzBuzz.js', () => {
   // Y recuerda esto, el código que hagas hoy será MUCHO peor cuando lo veas mañana.
   // Y hoy lo has hecho lo mejor que has podido, con lo que sabías y en la situación
   // que te encontrabas ^^
-})
+});
 // PISTA:
 // Cómo descubrir si un número es divisible entre 2:
 // (unNumero % 2 === 0)
