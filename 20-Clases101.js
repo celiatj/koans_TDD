@@ -289,7 +289,7 @@ describe("20-Clases101.js", () => {
     // reasignar.
     LaFormaQueMenosMeGusta = "Me han reasignado y ya no soy una clase";
 
-    expect(LaFormaQueMenosMeGusta).toBe(RellenameCorrectamente);
+    expect(LaFormaQueMenosMeGusta).toBe("Me han reasignado y ya no soy una clase");
   });
 
   it("otras maneras de declarar atributos", () => {
