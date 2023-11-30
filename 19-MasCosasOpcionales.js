@@ -12,14 +12,14 @@ describe('19-MasCosasOpcionales.js', () => {
     // supieras)
     unValorCualquiera = unValorCualquiera + 5
     // No tiene trampa... es una suma.
-    expect(unValorCualquiera).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera).toBe(15)
 
     let otroValorCualquiera = 10
     // Sin embargo, puede que esta no la conozcas ;P
     otroValorCualquiera += 5
 
     // ¿Que piensas?
-    expect(unValorCualquiera === otroValorCualquiera).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera === otroValorCualquiera).toBe(true)
     // El += es como incrementar el valor que ya tenemos en la cantidad que
     // le indicamos.
   })
@@ -33,13 +33,13 @@ describe('19-MasCosasOpcionales.js', () => {
     otroValorCualquiera += 1
     unValorCualquieraMas ++
 
-    expect(unValorCualquiera).toBe(RellenameCorrectamente)
-    expect(otroValorCualquiera).toBe(RellenameCorrectamente)
-    expect(unValorCualquieraMas).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera).toBe(11)
+    expect(otroValorCualquiera).toBe(11)
+    expect(unValorCualquieraMas).toBe(11)
 
     unValorCualquieraMas ++
     // Aquí lo tienes, otra manera de incrementar.
-    expect(unValorCualquieraMas).toBe(RellenameCorrectamente)
+    expect(unValorCualquieraMas).toBe(12)
   })
 
   it('reducir cantidades ^^', () => {
@@ -50,7 +50,7 @@ describe('19-MasCosasOpcionales.js', () => {
     unValorCualquiera = unValorCualquiera - 5
     otroValorCualquiera -= 5
 
-    expect(unValorCualquiera === otroValorCualquiera).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera === otroValorCualquiera).toBe(true)
   })
 
   it('reduciendo cantidades de uno en uno', () => {
@@ -59,7 +59,7 @@ describe('19-MasCosasOpcionales.js', () => {
 
     unValorCualquiera --
 
-    expect(unValorCualquiera).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera).toBe(9)
   })
   // Aunque ya no existen el **, ni el //, ni el %%...
   it('también se pueden acumular otras operaciones', () => {
@@ -68,18 +68,18 @@ describe('19-MasCosasOpcionales.js', () => {
 
     unValorCualquiera *= 10
 
-    expect(unValorCualquiera).toBe(RellenameCorrectamente)
+    expect(unValorCualquiera).toBe(100)
     // División
     let otroValorCualquiera = 100
 
     otroValorCualquiera /= 10
 
-    expect(otroValorCualquiera).toBe(RellenameCorrectamente)
+    expect(otroValorCualquiera).toBe(10)
     // Y modularizar (Me acabo de inventar el nombre, espero que sea así ;)
     let unValorCualquieraMas = 1000
 
     unValorCualquieraMas %= 10
 
-    expect(unValorCualquieraMas).toBe(RellenameCorrectamente)
+    expect(unValorCualquieraMas).toBe(0)
   })
 })
