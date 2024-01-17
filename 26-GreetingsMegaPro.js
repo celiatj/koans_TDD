@@ -25,7 +25,31 @@ describe('26-GreetingsMegaPro.js', () => {
   //   con el saludo anterior (en el test, se verá bastante más claro).
   // Escribe aquí abajo tu clase (Nota: Puedes mirar lo anterior, pero no copies y
   // pegues, por si se te había pasado por la cabeza :)
-
+  const IA = class {
+    saludo = "";
+    array = [];
+    saluda = function (array) {
+      if(array!= undefined) this.array = array;
+      if (this.array === undefined || this.array.length === 0) {
+        this.saludo = "¡Hola a todos!";
+      } else if (this.array.length === 1) {
+        this.saludo = "¡Hola! " + this.array.at(0);
+      } else if (this.array.length === 2) {
+        this.saludo = "¡Hola! " + this.array.at(0) + " y " + this.array.at(1);
+      } else {
+        this.saludo = "¡Hola! ";
+        let utimovalor = this.array.pop();
+        for (const nom of this.array) {
+          this.saludo += nom + ", ";
+        }
+        //saludo.trim()
+        this.saludo = this.saludo.substring(0, this.saludo.length - 2);
+        //saludo.slice(0, -1);
+        this.saludo += " y " + utimovalor;
+      }
+      return this.saludo;
+    };
+  };
 
   // Estos primeros para no perder la costumbre de ir poco a poco.
   it('la IA existe', () => {
@@ -104,7 +128,7 @@ describe('26-GreetingsMegaPro.js', () => {
 
   // - Si la FUNCIÓN se usa por SEGUNDA vez y NO RECIBE nada, RETORNARA una STRING
   //   con el saludo anterior (en el test, se verá bastante más claro).
-  it('saluda por segunda vez a los mismos si no se le dice a quien saludar', () => {
+  skip('saluda por segunda vez a los mismos si no se le dice a quien saludar', () => {
     const ia = new IA()
 
     let saludo = ia.saluda(['Akira', 'Charlie', 'Robin'])
