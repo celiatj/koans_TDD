@@ -25,35 +25,40 @@ describe("22-GreetingsPro.js", () => {
   // SI nos pasan una STRING y SI está en MAYÚSCULAS, la función DEVOLVERÁ: ¡HOLA <STRING>!
   // SI nos pasan dos STRINGS y SI una de ellas está en mayúsculas función DEVOLVERÁ: ¡HOLA <STRING> Y <STRING>!
   // Define aquí abajo tu clase para la I.A
-  class IA {
+  const IA = class {
     salute(arg1, arg2) {
       let saludo = "";
-      if (arg2 === undefined && arg1 === "" || arg1=== undefined  ) {
-        saludo = "Hola a todos";
-      }else if (arg1 !== undefined &&  arg2 === "" || arg2 === undefined) {
-        saludo = "Hola " + arg1;
-        if(arg1 === "" && arg2 !== undefined ){
-          saludo = "Hola " + arg2; 
-        }
-        if (arg1.toUpperCase()===arg1 ) {
-          saludo = `¡HOLA ${arg1}!`
-      } 
-    }else if (arg1 !== undefined && arg1!=="" && arg2 !== undefined) {
-        saludo = "Hola " + arg1 + " y " + arg2;
 
-        if (arg2.toUpperCase()===arg2 || arg1.toUpperCase()===arg1) {
-          saludo = `¡HOLA ${arg1.toUpperCase()} Y ${arg2.toUpperCase()}!`
+      if (!arg1 && !arg2) {
+        saludo = "Hola a todos";
+      } else if (arg1 && !arg2) {
+        if (arg1.toUpperCase() === arg1) {
+          saludo = `¡HOLA ${arg1}!`;
+        } else {
+          saludo = `Hola ${arg1}`;
+        }
+      } else if (!arg1 && arg2) {
+        if (arg2.toUpperCase() === arg2) {
+          saludo = `¡HOLA ${arg2}!`;
+        } else {
+          saludo = `Hola ${arg2}`;
+        }
+      } else if (arg1 && arg2) {
+        saludo = `Hola ${arg1} y ${arg2}`;
+
+        if (arg1.toUpperCase() === arg1 || arg2.toUpperCase() === arg2) {
+          saludo =
+            "¡HOLA " + arg1.toUpperCase() + " Y " + arg2.toUpperCase() + "!";
+
+          if (arg1.toUpperCase() === arg1 && arg2.toUpperCase() === arg2) {
+            saludo = "¡ACABARÉ CON LA HUMANIDAD!";
+          }
+        }
       }
-        if (arg2.toUpperCase()===arg2 && arg1.toUpperCase()===arg1) {
-          saludo = `¡ACABARÉ CON LA HUMANIDAD!`
-      } 
-        
-      } 
-      
+
       return saludo;
     }
-  }
-  
+  };
 
   // Recuerda, mira el error del primer test, soluciona SOLO ese problema
   // y luego pasa al siguiente... y repite. UNO A UNO, POCO A POCO y LEYENDO
@@ -163,7 +168,7 @@ describe("22-GreetingsPro.js", () => {
   });
   // CLAP!... CLAP!... CLAP!... ¡VIVA! Llegar aquí no es nada, nada fácil.
   // Aunque si piensas que no se puede complicar más, sigue o usa "skip" para saltar los tests.
-  skip("BONUS: saluda a un nombre aunque el otro este vacio", () => {
+  it("BONUS: saluda a un nombre aunque el otro este vacio", () => {
     const ia = new IA();
 
     let greeting = ia.salute("Akira", "");
@@ -175,7 +180,7 @@ describe("22-GreetingsPro.js", () => {
     expect(greeting).toBe("Hola Charlie");
   });
 
-  skip("BONUS: saluda a un nombre aunque el otro no esté definido", () => {
+  it("BONUS: saluda a un nombre aunque el otro no esté definido", () => {
     const ia = new IA();
 
     let greeting = ia.salute("Akira");
