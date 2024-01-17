@@ -7,6 +7,30 @@ describe('28-StringsCalculator.js', () => {
   // Aquí vamos a la práctica, que tiene muchas "cositas".
   // Escribe aquí abajo tu clase:
 
+  class MiString {
+    frase;
+    separador;
+    constructor(frase) {
+      this.frase = frase;
+    }
+    suma() {
+      let array = this.frase.split(",");
+      let result = 0;
+
+      for (const numero of array) {
+        if (!isNaN(parseInt(numero))) {
+          if (!numero.includes("-") && !numero.includes("/")) {
+            result += parseInt(numero);
+          }
+        }
+      }
+      return result;
+    }
+    anyadirSeparador(separador) {
+      this.separador = separador;
+      this.frase = this.frase.replaceAll(separador, ",");
+    }
+  }
 
   // Las fáciles primero
   it('está definida', () => {
