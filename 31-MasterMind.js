@@ -23,7 +23,27 @@ describe('31-MasterMind.js', () => {
   // comparar arrays, así que tendrás que implementarlo tu. Pero como siempre,
   // poco a poco, test a test.
   // Escribe aquí abajo tu código:
-
+  const MasterMind = class {
+    constructor(combinacionSecreta) {
+      this.combinacionSecreta = combinacionSecreta;
+    }
+  
+    compara(intento) {
+      let aciertos = [];
+  
+      for (let i = 0; i < intento.length; i++) {
+        const color = intento[i];
+  
+        if (color === this.combinacionSecreta[i]) {
+          aciertos.push("bien colocado");
+        } else if (this.combinacionSecreta.includes(color)) {
+          aciertos.push("acierto");
+        }
+      }
+  
+      return aciertos;
+    }
+  };
 
   it('está definido', () => {
     expect(MasterMind).not.toBeUndefined()
