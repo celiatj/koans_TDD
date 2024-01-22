@@ -1,5 +1,4 @@
-
-describe('39-RompiendoElTriangulo.js', () => {
+describe("39-RompiendoElTriangulo.js", () => {
   // Rompiendo el triángulo es una kata adaptada (otra vez de forma improvisada :)
   // En la que vamos a hacer la kata del triángulo pero vamos a hacer que lance
   // algunos errores.
@@ -10,60 +9,90 @@ describe('39-RompiendoElTriangulo.js', () => {
   // isósceles o escaleno.
   // La otra vez la hicimos con una función, esta vez será la clase triangulo ;)
   // Escribe aquí abajo tu clase:
+  class Triangulo {
+    constructor(x, y, z) {
+      if (x <= 0 && y <= 0 && z <= 0) {
+        throw new Error('Triángulo imposible');
+      }
+      if (x <= 0) {
+        throw new Error('Lado A invalido');
+      }
+      if (y <= 0) {
+        throw new Error('Lado B invalido');
+      }
+      if (z <= 0) {
+        throw new Error('Lado C invalido');
+      }
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+    tipo() {
+      let triangulo;
 
+      if (this.x === this.y && this.y === this.z) {
+        triangulo = "es equilátero";
+      } else if (this.x === this.y || this.y === this.z || this.x === this.z) {
+        triangulo = "es isósceles";
+      } else if (this.x !== this.y && this.y !== this.z) {
+        triangulo = "es escaleno";
+      }
 
+      return triangulo;
+    }
+  }
 
   // Venga como todo el developer, nos saltamos la parte fácil.
-  it('nos dice que tipo de triángulo es dependiendo de el tamaño de sus lados', () => {
-    let triangulo = new Triangulo(10, 10, 10)
-    expect(triangulo.tipo()).toBe('es equilátero')
-    triangulo = new Triangulo(3, 3, 3)
-    expect(triangulo.tipo()).toBe('es equilátero')
-    triangulo = new Triangulo(11, 7, 3)
-    expect(triangulo.tipo()).toBe('es escaleno')
-    triangulo = new Triangulo(5, 99, 2)
-    expect(triangulo.tipo()).toBe('es escaleno')
-    triangulo = new Triangulo(101, 10, 10)
-    expect(triangulo.tipo()).toBe('es isósceles')
-    triangulo = new Triangulo(10, 101, 10)
-    expect(triangulo.tipo()).toBe('es isósceles')
-    triangulo = new Triangulo(10, 10, 101)
-    expect(triangulo.tipo()).toBe('es isósceles')
-  })
+  it("nos dice que tipo de triángulo es dependiendo de el tamaño de sus lados", () => {
+    let triangulo = new Triangulo(10, 10, 10);
+    expect(triangulo.tipo()).toBe("es equilátero");
+    triangulo = new Triangulo(3, 3, 3);
+    expect(triangulo.tipo()).toBe("es equilátero");
+    triangulo = new Triangulo(11, 7, 3);
+    expect(triangulo.tipo()).toBe("es escaleno");
+    triangulo = new Triangulo(5, 99, 2);
+    expect(triangulo.tipo()).toBe("es escaleno");
+    triangulo = new Triangulo(101, 10, 10);
+    expect(triangulo.tipo()).toBe("es isósceles");
+    triangulo = new Triangulo(10, 101, 10);
+    expect(triangulo.tipo()).toBe("es isósceles");
+    triangulo = new Triangulo(10, 10, 101);
+    expect(triangulo.tipo()).toBe("es isósceles");
+  });
   // Esto ya lo sabíamos hacer ^^ Ahora a por lo importante
-  it('lanza un error si uno de sus lados mide cero', () => {
+  it("lanza un error si uno de sus lados mide cero", () => {
     try {
-      new Triangulo(0, 10, 10)
+      new Triangulo(0, 10, 10);
       // A la siguiente linea tu ni caso. ¡PERO NO SE TOCA!
-      throw new RellenameCorrectamente()
+      throw new RellenameCorrectamente();
       // Ohhh!! Siempre fue un error. En la programación no existe la magia xD
     } catch (error) {
-      expect(error instanceof Error).toBe(true)
-      expect(error.message).toBe('Lado A invalido')
+      expect(error instanceof Error).toBe(true);
+      expect(error.message).toBe("Lado A invalido");
     }
     try {
-      new Triangulo(10, 0, 10)
-      throw new RellenameCorrectamente()
+      new Triangulo(10, 0, 10);
+      throw new RellenameCorrectamente();
     } catch (error) {
-      expect(error instanceof Error).toBe(true)
-      expect(error.message).toBe('Lado B invalido')
+      expect(error instanceof Error).toBe(true);
+      expect(error.message).toBe("Lado B invalido");
     }
     try {
-      new Triangulo(10, 10, 0)
-      throw new RellenameCorrectamente()
+      new Triangulo(10, 10, 0);
+      throw new RellenameCorrectamente();
     } catch (error) {
-      expect(error instanceof Error).toBe(true)
-      expect(error.message).toBe('Lado C invalido')
+      expect(error instanceof Error).toBe(true);
+      expect(error.message).toBe("Lado C invalido");
     }
-  })
+  });
 
-  it('lanza un error si todos sus lados miden cero', () => {
+  it("lanza un error si todos sus lados miden cero", () => {
     try {
-      new Triangulo(0, 0, 0)
-      throw new RellenameCorrectamente()
+      new Triangulo(0, 0, 0);
+      throw new RellenameCorrectamente();
     } catch (error) {
-      expect(error instanceof Error).toBe(true)
-      expect(error.message).toBe('Triángulo imposible')
+      expect(error instanceof Error).toBe(true);
+      expect(error.message).toBe("Triángulo imposible");
     }
-  })
-})
+  });
+});
