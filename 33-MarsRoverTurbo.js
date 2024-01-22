@@ -22,6 +22,77 @@ describe('33-MarsRoverTurbo.js', () => {
   // Pasa, test a test y lee atentamente tanto los tests como los errores.
   // Escribe tu clase adí abajo:
 
+  class MarsRoverTurbo {
+    constructor() {
+      this.x = 0;
+      this.y = 0;
+      this.direccion = 'N';
+    }
+  
+    static aterrizaEn(posicionInicial = { x: 0, y: 0, direccion: 'N' }) {
+      const marsRover = new MarsRoverTurbo();
+      marsRover.x = posicionInicial.x;
+      marsRover.y = posicionInicial.y;
+      marsRover.direccion = posicionInicial.direccion;
+      return marsRover;
+    }
+  
+    posicionActual() {
+      return { x: this.x, y: this.y, direccion: this.direccion };
+    }
+  
+    ejecutarOrdenes(ordenes) {
+      ordenes.forEach(orden => {
+        switch (orden) {
+          case 'm':
+            this.avanzar();
+            break;
+          case 'i':
+            this.girarIzquierda();
+            break;
+          case 'd':
+            this.girarDerecha();
+            break;
+          default:
+            // Orden no reconocida
+            break;
+        }
+      });
+    }
+  
+    avanzar() {
+      switch (this.direccion) {
+        case 'N':
+          this.y++;
+          break;
+        case 'E':
+          this.x++;
+          break;
+        case 'S':
+          this.y--;
+          break;
+        case 'O':
+          this.x--;
+          break;
+        default:
+          // Dirección no reconocida
+          break;
+      }
+    }
+  
+    girarIzquierda() {
+      const direcciones = ['N', 'O', 'S', 'E'];
+      const index = direcciones.indexOf(this.direccion);
+      this.direccion = direcciones[(index + 1) % direcciones.length];
+  }
+  
+  girarDerecha() {
+      const direcciones = ['N', 'E', 'S', 'O'];
+      const index = direcciones.indexOf(this.direccion);
+      this.direccion = direcciones[(index + 1) % direcciones.length];
+  }
+
+  }
 
   it('existe', () => {
     expect(MarsRoverTurbo).not.toBeUndefined()
@@ -192,6 +263,6 @@ describe('33-MarsRoverTurbo.js', () => {
   // ¡¿Cómo he acabado haciendo esto?! xD
   it('BONUS TRACK: Puede volar', () => {
     // ¡Es una broma!, esto para otro día :P
-    expect('El bonus track para otro día, ahora a descansar ^^').toBe(RellenameCorrectamente)
+    expect('El bonus track para otro día, ahora a descansar ^^').toBe('El bonus track para otro día, ahora a descansar ^^')
   })
 })
