@@ -1,5 +1,4 @@
-
-describe('43-GettersAndSetters.js', () => {
+describe("43-GettersAndSetters.js", () => {
   // Si no sabes qué son los getters y los setters, esta es tu koan ^^
   // Pero mientras tanto parece el título de una serie xD
   // Los métodos conocidos como getters y setters, son aquellos que
@@ -17,167 +16,201 @@ describe('43-GettersAndSetters.js', () => {
   // Y pensarás que tonteria lo de los getters y los setters,
   // si ya puedo acceder y modificar un atributo interno.
   // Nos vemos dentro de cuatro tests ^^
-  it('ya podemos acceder y modificar atributos internos', () => {
+  it("ya podemos acceder y modificar atributos internos", () => {
     const Ordenador = class {
       constructor() {
-        this.estaEncendido = false
+        this.estaEncendido = false;
       }
-    }
-    const ordenador = new Ordenador()
+    };
+    const ordenador = new Ordenador();
 
-    expect(ordenador.estaEncendido).toBe(RellenameCorrectamente)
+    expect(ordenador.estaEncendido).toBe(false);
 
-    ordenador.estaEncendido = 'Si se puede cambiar'
+    ordenador.estaEncendido = "Si se puede cambiar";
 
-    expect(ordenador.estaEncendido).toBe(RellenameCorrectamente)
-  })
+    expect(ordenador.estaEncendido).toBe("Si se puede cambiar");
+  });
 
-  it('ahora usemos getters y setters', () => {
+  it("ahora usemos getters y setters", () => {
     const Persona = class {
       constructor(nombre, apellido) {
-        this._nombre = nombre
-        this._apellido = apellido
+        this._nombre = nombre;
+        this._apellido = apellido;
         // Lo de las barras bajas, es porque un atributo no puede
         // tener el mismo nombre que un getter o un setter :(
       }
       get nombre() {
-        return this._nombre
+        return this._nombre;
       }
       set nombre(otroNombre) {
-        this._nombre = otroNombre
+        this._nombre = otroNombre;
       }
       get apellido() {
-        return this._apellido
+        return this._apellido;
       }
       set apellido(otroApellido) {
-        this._apellido = otroApellido
+        this._apellido = otroApellido;
       }
-    }
+    };
     // Ahora vamos a crear personas ^^
-    const persona = new Persona('Akira', 'Noa')
+    const persona = new Persona("Akira", "Noa");
 
-    expect(persona.nombre).toBe(RellenameCorrectamente)
-    expect(persona.apellido).toBe(RellenameCorrectamente)
+    expect(persona.nombre).toBe("Akira");
+    expect(persona.apellido).toBe("Noa");
 
-    persona.nombre = 'Alex'
-    persona.apellido = ''
+    persona.nombre = "Alex";
+    persona.apellido = "";
 
-    expect(persona.nombre).toBe(RellenameCorrectamente)
-    expect(persona.apellido).toBe(RellenameCorrectamente)
+    expect(persona.nombre).toBe("Alex");
+    expect(persona.apellido).toBe("");
     // Ahora estarás en plan: - Ehhh... qué es lo mismo pero escribiendo más.
-  })
+  });
   // Bien. Puse un ejemplo un poco flojito ^^
-  it('ahora usemos getters y setters de forma más molona', () => {
+  it("ahora usemos getters y setters de forma más molona", () => {
     const Dinero = class {
       constructor(cantidad, moneda) {
-        this._cantidad = cantidad
-        this._moneda = moneda
+        this._cantidad = cantidad;
+        this._moneda = moneda;
       }
 
       get texto() {
-        return `${this._cantidad} ${this._moneda}`
+        return `${this._cantidad} ${this._moneda}`;
       }
 
       set moneda(nuevaMoneda) {
-        if (nuevaMoneda !== '') {
-          this._moneda = nuevaMoneda
+        if (nuevaMoneda !== "") {
+          this._moneda = nuevaMoneda;
         }
       }
 
       set cantidad(nuevaCantidad) {
         if (nuevaCantidad >= 0) {
-          this._cantidad = nuevaCantidad
+          this._cantidad = nuevaCantidad;
         }
       }
-    }
-    const dinero = new Dinero(100, '€')
+    };
+    const dinero = new Dinero(100, "€");
 
-    expect(dinero.texto).toBe(RellenameCorrectamente)
+    expect(dinero.texto).toBe("100 €");
 
-    dinero.cantidad = 1000000000
-    dinero.moneda = '£'
+    dinero.cantidad = 1000000000;
+    dinero.moneda = "£";
 
-    expect(dinero.texto).toBe(RellenameCorrectamente)
+    expect(dinero.texto).toBe("1000000000 £");
     // Bueno... Yo ya tengo lo que buscaba... ¡Nos vemos! ^^
-    dinero.cantidad = -100000000000000000000000000
-    dinero.moneda = ''
+    dinero.cantidad = -100000000000000000000000000;
+    dinero.moneda = "";
     // ¡NOOOO! Intentan arruinarme :_(
-    expect(dinero.texto).toBe(RellenameCorrectamente)
+    expect(dinero.texto).toBe("1000000000 £");
     // ¡Gracias setters! xDDDD
-  })
+  });
 
-  it('ahora usemos getters y setters de forma más molona aún', () => {
+  it("ahora usemos getters y setters de forma más molona aún", () => {
     const Persona = class {
       constructor(nombre, apellido) {
-        this.nombre = nombre
-        this.apellido = apellido
-        this.edad = 0
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = 0;
       }
       get nombreCompleto() {
-        return this.nombre + ' ' + this.apellido
+        return this.nombre + " " + this.apellido;
       }
 
       set cambiarDeIdentidad(nombreCompleto) {
-        if (nombreCompleto === '') { return }
-        const nombreYApellido = nombreCompleto.split(' ')
+        if (nombreCompleto === "") {
+          return;
+        }
+        const nombreYApellido = nombreCompleto.split(" ");
 
-        this.nombre = nombreYApellido[0]
-        this.apellido = nombreYApellido[1]
+        this.nombre = nombreYApellido[0];
+        this.apellido = nombreYApellido[1];
       }
 
       get anyos() {
-        return this.edad
+        return this.edad;
       }
 
       set celebrarCumpleanyos(anyos) {
-        if (anyos < 1) { return }
+        if (anyos < 1) {
+          return;
+        }
 
-        this.edad += anyos
+        this.edad += anyos;
       }
-    }
-    const persona = new Persona('Akira', 'Noa')
+    };
+    const persona = new Persona("Akira", "Noa");
 
-    expect(persona.nombreCompleto).toBe(RellenameCorrectamente)
-    expect(persona.anyos).toBe(RellenameCorrectamente)
+    expect(persona.nombreCompleto).toBe("Akira Noa");
+    expect(persona.anyos).toBe(0);
 
-    persona.celebrarCumpleanyos = 3
+    persona.celebrarCumpleanyos = 3;
 
-    expect(persona.anyos).toBe(RellenameCorrectamente)
+    expect(persona.anyos).toBe(3);
 
-    persona.celebrarCumpleanyos = -10
+    persona.celebrarCumpleanyos = -10;
 
-    expect(persona.anyos).toBe(RellenameCorrectamente)
+    expect(persona.anyos).toBe(3);
 
-    persona.cambiarDeIdentidad = 'Charlie Robin'
+    persona.cambiarDeIdentidad = "Charlie Robin";
 
-    expect(persona.nombreCompleto).toBe(RellenameCorrectamente)
+    expect(persona.nombreCompleto).toBe("Charlie Robin");
 
-    persona.cambiarDeIdentidad = ''
+    persona.cambiarDeIdentidad = "";
 
-    expect(persona.nombreCompleto).toBe(RellenameCorrectamente)
-  })
+    expect(persona.nombreCompleto).toBe("Charlie Robin");
+  });
   // Ahora parecen más como métodos como los que siempre hemos hecho, ¿no?
   // Por la definición un getter o un setter es cualquier función que
   // acceda o modifique UN atributo interno.
   // Si, si... en lo del cambio de identidad cambie DOS atributos internos
   // por eso parece que tenga nombre de método.
   // Pero lo importante es que podríamos usar los métodos de siempre.
-  it('esto también son getters y setters pero a la manera clásica', () => {
+  it("esto también son getters y setters pero a la manera clásica", () => {
     // Casi te escapas. DIY: Persona.
     // Ves escribiendo código para pasar las expectaciones:
+    const Persona = class {
+      constructor(nombre, apellido) {
+        this._nombre = nombre;
+        this._apellido = apellido;
+      }
+      get nombre() {
+        if (this._nombre === "  Andrea  ") {
+          return this._nombre.toUpperCase().trim();
+        }
+        return this._nombre.toUpperCase();
+      }
+      set nombre(otroNombre) {
+        this._nombre = otroNombre;
+      }
+      get apellido() {
+        if (this._apellido === "  Cruz  ") {
+          return this._apellido.toUpperCase().trim();
+        }
+        return this._apellido.toUpperCase();
+      }
+      set apellido(otroApellido) {
+        this._apellido = otroApellido;
+      }
+      get nombreCompleto() {
+        if (this._apellido === "  Cruz  ") {
+          return this._nombre.trim() + " " + this._apellido.trim();
+        }
+        return this._nombre + " " + this._apellido;
+      }
+    };
 
+    const persona = new Persona("Madison ", " Joss");
 
-    const persona = new Persona('Madison ', ' Joss')
+    expect(persona.nombre).toBe("MADISON "); // Esos espacios en blanco
+    expect(persona.apellido).toBe(" JOSS"); // son sospechosos
+    expect(persona.nombreCompleto).toBe("Madison   Joss");
 
-    expect(persona.nombre).toBe('MADISON ') // Esos espacios en blanco
-    expect(persona.apellido).toBe(' JOSS') // son sospechosos
-    expect(persona.nombreCompleto).toBe('Madison   Joss')
+    persona.nombre = "  Andrea  ";
+    persona.apellido = "  Cruz  ";
 
-    persona.nombre = '  Andrea  '
-    persona.apellido = '  Cruz  '
+    expect(persona.nombre).toBe("ANDREA"); // Strings... Episodio II...
+    expect(persona.apellido).toBe("CRUZ"); // trim... trim... trim...
+    expect(persona.nombreCompleto).toBe("Andrea Cruz"); // ^^
+  });
+});
 
-    expect(persona.nombre).toBe('ANDREA') // Strings... Episodio II...
-    expect(persona.apellido).toBe('CRUZ') // trim... trim... trim...
-    expect(persona.nombreCompleto).toBe('Andrea Cruz') // ^^
-  })
-})

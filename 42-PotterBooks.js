@@ -46,19 +46,6 @@ describe("42-PotterBooks.js", () => {
     static vacia() {
       return new Cesta([]);
     }
-    /*
-    calcularTotal(){
-      const miSet = new Set(this.libros);
-      if(this.libros.length === miSet.size){
-        this.precio = this.libros.length * this.descuesto[this.libros.length] * 8
-      }else {
-        let n = this.libros.length - miSet.size
-        this.precio = (miSet.size* this.descuesto[miSet.size] * 8) + (n*8*this.descuesto[n])
-      }
-     return this.precio
-     
-     } 
-     */
 
     calcularTotal() {
       this.precio = 0.0;
@@ -85,7 +72,7 @@ describe("42-PotterBooks.js", () => {
             break;
         }
       }
-     
+     // while(this.recuentosLibros.length > 0){ 
       for (var i = this.recuentosLibros.length; i > 0; i--) {
         this.recuentosLibros = this.recuentosLibros.filter(
           (elemento) => elemento !== 0
