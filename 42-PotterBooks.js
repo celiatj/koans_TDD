@@ -1,5 +1,4 @@
-
-describe('42-PotterBooks.js', () => {
+describe("42-PotterBooks.js", () => {
   // La famosa kata Potter, esta vez dejo el problema caer junto con
   // los tests, ya te apañas. Suerte ;P
   // EL PROBLEMON:
@@ -31,201 +30,277 @@ describe('42-PotterBooks.js', () => {
   // de cada (24*0.90=21.60), entonces: 30 + 21.60 = 51.60 €
   // Pufff... menudo lio xD
   // Aquí abajo tu código:
+  class Cesta {
+    constructor(items) {
+      this.libros = items;
+    this.precio;
+      this.descuento = [0, 1, 0.95, 0.9, 0.8, 0.75];
+     this.recuentosLibros ;
+      this.libro1 = "Harry Potter y la piedra filosofal";
+      this.libro2 = "Harry Potter y la cámara secreta";
+      this.libro3 = "Harry Potter y el prisionero de Azkaban";
+      this.libro4 = "Harry Potter y el cáliz de fuego";
+      this.libro5 = "Harry Potter y la Orden del Fénix";
+    }
 
+    static vacia() {
+      return new Cesta([]);
+    }
+    /*
+    calcularTotal(){
+      const miSet = new Set(this.libros);
+      if(this.libros.length === miSet.size){
+        this.precio = this.libros.length * this.descuesto[this.libros.length] * 8
+      }else {
+        let n = this.libros.length - miSet.size
+        this.precio = (miSet.size* this.descuesto[miSet.size] * 8) + (n*8*this.descuesto[n])
+      }
+     return this.precio
+     
+     } 
+     */
 
-  it('calcula un total de cero cuando no tiene nada en la cesta', () => {
-    const cesta = Cesta.vacia()
+    calcularTotal() {
+      this.precio = 0.0;
+      this.recuentosLibros = [0, 0, 0, 0, 0];
 
-    const total = cesta.calcularTotal()
+      for (const libro of this.libros) {
+        switch (libro) {
+          case this.libro1:
+            this.recuentosLibros[0]++;
+            break;
+          case this.libro2:
+            this.recuentosLibros[1]++;
+            break;
+          case this.libro3:
+            this.recuentosLibros[2]++;
+            break;
+          case this.libro4:
+            this.recuentosLibros[3]++;
+            break;
+          case this.libro5:
+            this.recuentosLibros[4]++;
+            break;
+          default:
+            break;
+        }
+      }
+     
+      for (var i = this.recuentosLibros.length; i > 0; i--) {
+        this.recuentosLibros = this.recuentosLibros.filter(
+          (elemento) => elemento !== 0
+        );
+        this.precio +=
+          this.recuentosLibros.length *
+          this.descuento[this.recuentosLibros.length] *
+          8;
+        this.recuentosLibros = this.recuentosLibros.map(
+          (elemento) => elemento - 1
+        );
+        }
+        this.precio=Math.round(this.precio * 10) / 10
+      return this.precio;
+    }
 
-    expect(total).toBe(0.0)
-  })
+    anyadir(lib) {
+      this.libros.push(lib);
+     
+    }
+  }
 
-  it('calcula el precio de un libro cuando solo se añadió uno', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const cesta = Cesta.vacia()
+  it("calcula un total de cero cuando no tiene nada en la cesta", () => {
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
+    const total = cesta.calcularTotal();
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(8.0)
-  })
+    expect(total).toBe(0.0);
+  });
 
-  it('calcula el precio de un libro cuando añade dos libros iguales', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const cesta = Cesta.vacia()
+  it("calcula el precio de un libro cuando solo se añadió uno", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(unLibro)
+    cesta.anyadir(unLibro);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(16.0)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(8.0);
+  });
 
-  it('calcula el precio con descuento cuando añadio dos libros diferentes', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const otroLibro = 'Harry Potter y la cámara secreta'
-    const cesta = Cesta.vacia()
+  it("calcula el precio de un libro cuando añade dos libros iguales", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(unLibro);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(15.2)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(16.0);
+  });
 
-  it('calcula el precio con descuento cuando añadio otros dos libros diferentes', () => {
-    const unLibro = 'Harry Potter y el prisionero de Azkaban'
-    const otroLibro = 'Harry Potter y el cáliz de fuego'
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadio dos libros diferentes", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const otroLibro = "Harry Potter y la cámara secreta";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(15.2)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(15.2);
+  });
 
-  it('calcula el precio con descuento cuando añadio tres libros diferentes', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const otroLibro = 'Harry Potter y la cámara secreta'
-    const otroLibroMas = 'Harry Potter y el prisionero de Azkaban'
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadio otros dos libros diferentes", () => {
+    const unLibro = "Harry Potter y el prisionero de Azkaban";
+    const otroLibro = "Harry Potter y el cáliz de fuego";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
-    cesta.anyadir(otroLibroMas)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(21.6)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(15.2);
+  });
 
-  it('calcula el precio con descuento cuando añadió tres libros diferentes', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const otroLibro = 'Harry Potter y el cáliz de fuego'
-    const otroLibroMas = 'Harry Potter y el prisionero de Azkaban'
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadio tres libros diferentes", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const otroLibro = "Harry Potter y la cámara secreta";
+    const otroLibroMas = "Harry Potter y el prisionero de Azkaban";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
-    cesta.anyadir(otroLibroMas)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
+    cesta.anyadir(otroLibroMas);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(21.6)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(21.6);
+  });
 
-  it('calcula el precio con descuento cuando añadió cuatro libros diferentes', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const otroLibro = 'Harry Potter y el cáliz de fuego'
-    const otroLibroMas = 'Harry Potter y el prisionero de Azkaban'
-    const yOtroLibroMas = 'Harry Potter y la cámara secreta'
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadió tres libros diferentes", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const otroLibro = "Harry Potter y el cáliz de fuego";
+    const otroLibroMas = "Harry Potter y el prisionero de Azkaban";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
-    cesta.anyadir(otroLibroMas)
-    cesta.anyadir(yOtroLibroMas)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
+    cesta.anyadir(otroLibroMas);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(25.6)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(21.6);
+  });
 
-  it('calcula el precio con descuento cuando añadió otros cuatro libros diferentes', () => {
-    const unLibro = 'Harry Potter y la piedra filosofal'
-    const otroLibro = 'Harry Potter y el cáliz de fuego'
-    const otroLibroMas = 'Harry Potter y el prisionero de Azkaban'
-    const yOtroLibroMas = 'Harry Potter y la Orden del Fénix'
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadió cuatro libros diferentes", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const otroLibro = "Harry Potter y el cáliz de fuego";
+    const otroLibroMas = "Harry Potter y el prisionero de Azkaban";
+    const yOtroLibroMas = "Harry Potter y la cámara secreta";
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir(unLibro)
-    cesta.anyadir(otroLibro)
-    cesta.anyadir(otroLibroMas)
-    cesta.anyadir(yOtroLibroMas)
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
+    cesta.anyadir(otroLibroMas);
+    cesta.anyadir(yOtroLibroMas);
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(25.6)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(25.6);
+  });
 
-  it('calcula el precio con descuento cuando añadió cinco libros diferentes', () => {
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadió otros cuatro libros diferentes", () => {
+    const unLibro = "Harry Potter y la piedra filosofal";
+    const otroLibro = "Harry Potter y el cáliz de fuego";
+    const otroLibroMas = "Harry Potter y el prisionero de Azkaban";
+    const yOtroLibroMas = "Harry Potter y la Orden del Fénix";
+    const cesta = Cesta.vacia();
+
+    cesta.anyadir(unLibro);
+    cesta.anyadir(otroLibro);
+    cesta.anyadir(otroLibroMas);
+    cesta.anyadir(yOtroLibroMas);
+
+    const total = cesta.calcularTotal();
+    expect(total).toBe(25.6);
+  });
+
+  it("calcula el precio con descuento cuando añadió cinco libros diferentes", () => {
+    const cesta = Cesta.vacia();
     // Demasiadas variables. A esto se le llama INLINEAR ^^
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
-    cesta.anyadir('Harry Potter y la cámara secreta')
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
+    cesta.anyadir("Harry Potter y la cámara secreta");
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(30.0)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(30.0);
+  });
 
-  it('calcula el precio con descuento cuando añadió dos lotes de cinco libros diferentes', () => {
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadió dos lotes de cinco libros diferentes", () => {
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
-    cesta.anyadir('Harry Potter y la cámara secreta')
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
-    cesta.anyadir('Harry Potter y la cámara secreta')
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
+    cesta.anyadir("Harry Potter y la cámara secreta");
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
+    cesta.anyadir("Harry Potter y la cámara secreta");
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(60.0)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(60.0);
+  });
 
-  it('calcula el precio con descuento cuando añadio tres lotes de dos libros diferentes', () => {
-    const cesta = Cesta.vacia()
+  it("calcula el precio con descuento cuando añadio tres lotes de dos libros diferentes", () => {
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
 
-    const total = cesta.calcularTotal()
-    expect(total).toBe(45.6)
-  })
+    const total = cesta.calcularTotal();
+    expect(total).toBe(45.6);
+  });
   // Esta kata es de las buenas. Recuerda parar a beber agua de vez en cuando
   // y aprovecha para despejar un poco la cabeza ;)
   // A POR EL EJEMPLO!
-  it('calcula el precio para un pack de 5 libros diferentes junto a otro de 3 libros diferentes', () => {
-    const cesta = Cesta.vacia()
+  it("calcula el precio para un pack de 5 libros diferentes junto a otro de 3 libros diferentes", () => {
+    const cesta = Cesta.vacia();
 
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
-    cesta.anyadir('Harry Potter y la cámara secreta')
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
+    cesta.anyadir("Harry Potter y la cámara secreta");
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
 
-    let total = cesta.calcularTotal()
-    expect(total).toBe(51.60)
+    let total = cesta.calcularTotal();
+    expect(total).toBe(51.6);
     // BONUS TRACK!! Ahora iremos añadiendo poco a poco ^^
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
 
-    total = cesta.calcularTotal()
-    expect(total).toBe(63.6)
+    total = cesta.calcularTotal();
+    expect(total).toBe(63.6);
 
-    cesta.anyadir('Harry Potter y la Orden del Fénix')
-    cesta.anyadir('Harry Potter y la piedra filosofal')
+    cesta.anyadir("Harry Potter y la Orden del Fénix");
+    cesta.anyadir("Harry Potter y la piedra filosofal");
 
-    total = cesta.calcularTotal()
-    expect(total).toBe(78.8)
+    total = cesta.calcularTotal();
+    expect(total).toBe(78.8);
 
-    cesta.anyadir('Harry Potter y la piedra filosofal')
-    cesta.anyadir('Harry Potter y el cáliz de fuego')
-    cesta.anyadir('Harry Potter y el prisionero de Azkaban')
+    cesta.anyadir("Harry Potter y la piedra filosofal");
+    cesta.anyadir("Harry Potter y el cáliz de fuego");
+    cesta.anyadir("Harry Potter y el prisionero de Azkaban");
 
-    total = cesta.calcularTotal()
-    expect(total).toBe(97.2)
-  })
+    total = cesta.calcularTotal();
+    expect(total).toBe(97.2);
+  });
   // En esta kata ya montas un negocio de verdad. Venga! a vender xD
-})
+});
