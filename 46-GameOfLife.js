@@ -1,5 +1,4 @@
-
-describe('46-GameOfLife.js', () => {
+describe("46-GameOfLife.js", () => {
   // "Game of life", también conocida como la "Conway", es la kata que
   // todo developer tiene que conocer. Porque es la kata que se ha el
   // "Global day of code retreat".
@@ -39,107 +38,122 @@ describe('46-GameOfLife.js', () => {
 
   // Como siempre, poco a poco, test a test.
   // Escribe aquí tu código:
+  class Reglas {
+    dictaminar(estado, cantidadDeVecinas) {
+      this.estado = estado;
+      if (estado === "celulaMuerta" && cantidadDeVecinas === 3)
+        this.estado = "celulaViva";
+      if (
+        (estado === "celulaViva" && cantidadDeVecinas < 2) ||
+        cantidadDeVecinas > 3
+      )
+        this.estado = "celulaMuerta";
+      return this.estado;
+    }
+  }
 
+  it("dictamina que una célula continuará viva con dos vecinas", () => {
+    const reglas = new Reglas();
+    const cantidadDeVecinas = 2;
 
-  it('dictamina que una célula continuará viva con dos vecinas', () => {
-    const reglas = new Reglas()
-    const cantidadDeVecinas = 2
+    const siguienteEstado = reglas.dictaminar("celulaViva", cantidadDeVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', cantidadDeVecinas)
+    expect(siguienteEstado).toBe("celulaViva");
+  });
 
-    expect(siguienteEstado).toBe('celulaViva')
-  })
+  it("dictamina que una célula continuará viva con tres vecinas", () => {
+    const reglas = new Reglas();
 
-  it('dictamina que una célula continuará viva con tres vecinas', () => {
-    const reglas = new Reglas()
+    const siguienteEstado = reglas.dictaminar("celulaViva", 3);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', 3)
+    expect(siguienteEstado).toBe("celulaViva");
+  });
 
-    expect(siguienteEstado).toBe('celulaViva')
-  })
+  it("dictamina que una célula continúa muerta con pocas vecinas", () => {
+    const reglas = new Reglas();
+    const pocasVecinas = 1;
 
-  it('dictamina que una célula continúa muerta con pocas vecinas', () => {
-    const reglas = new Reglas()
-    const pocasVecinas = 1
+    const siguienteEstado = reglas.dictaminar("celulaMuerta", pocasVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaMuerta', pocasVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula continúa muerta sin vecinas", () => {
+    const reglas = new Reglas();
+    const sinVecinas = 0;
 
-  it('dictamina que una célula continúa muerta sin vecinas', () => {
-    const reglas = new Reglas()
-    const sinVecinas = 0
+    const siguienteEstado = reglas.dictaminar("celulaMuerta", sinVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaMuerta', sinVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula continúa muerta con muchas vecinas", () => {
+    const reglas = new Reglas();
+    const muchasVecinas = 8;
 
-  it('dictamina que una célula continúa muerta con muchas vecinas', () => {
-    const reglas = new Reglas()
-    const muchasVecinas = 8
+    const siguienteEstado = reglas.dictaminar("celulaMuerta", muchasVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaMuerta', muchasVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula continúa muerta con dos vecinas", () => {
+    const reglas = new Reglas();
 
-  it('dictamina que una célula continúa muerta con dos vecinas', () => {
-    const reglas = new Reglas()
+    const siguienteEstado = reglas.dictaminar("celulaMuerta", 2);
 
-    const siguienteEstado = reglas.dictaminar('celulaMuerta', 2)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula morirá con pocas vecina", () => {
+    const reglas = new Reglas();
+    const pocasVecinas = 1;
 
-  it('dictamina que una célula morirá con pocas vecina', () => {
-    const reglas = new Reglas()
-    const pocasVecinas = 1
+    const siguienteEstado = reglas.dictaminar("celulaViva", pocasVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', pocasVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula morirá de soledad sin vecinas", () => {
+    const reglas = new Reglas();
+    const sinVecinas = 0;
 
-  it('dictamina que una célula morirá de soledad sin vecinas', () => {
-    const reglas = new Reglas()
-    const sinVecinas = 0
+    const siguienteEstado = reglas.dictaminar("celulaViva", sinVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', sinVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula morirá con cuatro vecinas", () => {
+    const reglas = new Reglas();
 
-  it('dictamina que una célula morirá con cuatro vecinas', () => {
-    const reglas = new Reglas()
+    const siguienteEstado = reglas.dictaminar("celulaViva", 4);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', 4)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula morirá por sobrepoblación con muchas vecinas", () => {
+    const reglas = new Reglas();
+    const muchasVecinas = 8;
 
-  it('dictamina que una célula morirá por sobrepoblación con muchas vecinas', () => {
-    const reglas = new Reglas()
-    const muchasVecinas = 8
+    const siguienteEstado = reglas.dictaminar("celulaViva", muchasVecinas);
 
-    const siguienteEstado = reglas.dictaminar('celulaViva', muchasVecinas)
+    expect(siguienteEstado).toBe("celulaMuerta");
+  });
 
-    expect(siguienteEstado).toBe('celulaMuerta')
-  })
+  it("dictamina que una célula muerta nacerá con tres vecinas", () => {
+    const reglas = new Reglas();
+    const vecinasParaQueSeDeLaVida = 3;
 
-  it('dictamina que una célula muerta nacerá con tres vecinas', () => {
-    const reglas = new Reglas()
-    const vecinasParaQueSeDeLaVida = 3
+    const siguienteEstado = reglas.dictaminar(
+      "celulaMuerta",
+      vecinasParaQueSeDeLaVida
+    );
 
-    const siguienteEstado = reglas.dictaminar('celulaMuerta', vecinasParaQueSeDeLaVida)
-
-    expect(siguienteEstado).toBe('celulaViva')
-  })
+    expect(siguienteEstado).toBe("celulaViva");
+  });
   // ¿Y lo siguiente que será? Ya tienes de todo, patinetes, robots, IAs,
   // viajes a Marte... también decides el destino de las células ^^
   // Sinceramente si solo nos centramos en el motor de reglas, tampoco
   // es un gran problema, pero no quería acabar con estas koans sin que
   // conocieras un poco sobre esta kata. A ver hasta donde llegas por tu
   // cuenta, te lo dejo como ejercicio ;)
-})
+});
