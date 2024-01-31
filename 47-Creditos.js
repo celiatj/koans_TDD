@@ -34,7 +34,7 @@ describe('47-Creditos.js', () => {
   // muy maja. No es porque sea miembro de ella ;P) www.devscola.org
 
   it('el test más complejo nunca visto', () => {
-    expect('Que el código te acompañe ;)').toBe(RellenameCorrectamente)
+    expect('Que el código te acompañe ;)').toBe('Que el código te acompañe ;)')
   })
   // Si se te presentara la oportunidad, estaria muy, pero que muy guay,
   // que lo que has aprendido con estas Koans, se lo pudieras enseñar a
